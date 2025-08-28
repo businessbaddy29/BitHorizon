@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitHorizon.io - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --danger-color: #ea4335;
+            --warning-color: #fbbc05;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 5%;
+        }
+        
+        /* User Panel Styles */
+        .user-panel {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .panel-menu {
+            display: flex;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .panel-menu ul {
+            display: flex;
+            list-style: none;
+            width: 100%;
+        }
+        
+        .panel-menu li {
+            flex: 1;
+        }
+        
+        .panel-menu a {
+            display: block;
+            padding: 1rem;
+            text-align: center;
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .panel-menu a:hover, .panel-menu a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .panel-content {
+            padding: 2rem;
+        }
+        
+        .dashboard-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-card {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .dashboard-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #5f6368;
+        }
+        
+        .dashboard-card p {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .market-overview {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .market-overview h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .positive {
+            color: var(--secondary-color);
+        }
+        
+        .negative {
+            color: var(--danger-color);
+        }
+        
+        .team-section {
+            margin-bottom: 2rem;
+        }
+        
+        .team-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .team-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .team-member {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-member img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .team-member p {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0d62d9;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-completed {
+            background-color: #e6f4ea;
+            color: var(--secondary-color);
+        }
+        
+        .status-processing {
+            background-color: #fef7e0;
+            color: var(--warning-color);
+        }
+        
+        .status-pending {
+            background-color: #fce8e6;
+            color: var(--danger-color);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 3000;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .panel-menu ul {
+                flex-wrap: wrap;
+            }
+            
+            .panel-menu li {
+                flex: 1 0 50%;
+            }
+            
+            .dashboard-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container" id="logoContainer">
+                <img src="https://via.placeholder.com/50" alt="BitHorizon Logo" class="logo">
+                <span class="company-name">BitHorizon.io</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- User Panel -->
+        <section id="userPanel" class="user-panel">
+            <div class="panel-header">
+                <h2>User Panel</h2>
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User Avatar" class="user-avatar">
+                    <div>
+                        <div id="userName">Loading...</div>
+                        <div id="userReferral">Referral: Loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-menu">
+                <ul>
+                    <li><a href="#" class="panel-menu-item active" data-panel="dashboard">Dashboard</a></li>
+                    <li><a href="#" class="panel-menu-item" data-panel="profile">User Profile</a></li>
+                    <li><a href="#" class="panel-menu-item" data-panel="team">My Team</a></li>
+                    <li><a href="#" class="panel-menu-item" data-panel="income">Income</a></li>
+                    <li><a href="#" class="panel-menu-item" data-panel="withdrawal">Withdrawal</a></li>
+                    <li><a href="#" class="panel-menu-item" data-panel="deposit">Deposit</a></li>
+                    <li><a href="#" class="panel-menu-item" data-panel="support">Support</a></li>
+                    <li><a href="#" id="logoutBtn">Logout</a></li>
+                </ul>
+            </div>
+            <div class="panel-content">
+                <!-- Dashboard Panel -->
+                <div id="dashboardPanel" class="panel-section">
+                    <h3>Dashboard Overview</h3>
+                    <div class="dashboard-overview">
+                        <div class="dashboard-card">
+                            <h3>Account Balance</h3>
+                            <p>$5,432.10</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Total Profit</h3>
+                            <p>$1,245.67</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Active Trades</h3>
+                            <p>8</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Team Members</h3>
+                            <p>24</p>
+                        </div>
+                    </div>
+                    
+                    <div class="market-overview">
+                        <h3>Your Recent Trades</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pair</th>
+                                    <th>Type</th>
+                                    <th>Open</th>
+                                    <th>Close</th>
+                                    <th>Profit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>EUR/USD</td>
+                                    <td>Buy</td>
+                                    <td>1.0850</td>
+                                    <td>1.0875</td>
+                                    <td class="positive">+$25.00</td>
+                                </tr>
+                                <tr>
+                                    <td>GBP/USD</td>
+                                    <td>Sell</td>
+                                    <td>1.2650</td>
+                                    <td>1.2634</td>
+                                    <td class="positive">+$16.00</td>
+                                </tr>
+                                <tr>
+                                    <td>USD/JPY</td>
+                                    <td>Buy</td>
+                                    <td>149.50</td>
+                                    <td>149.72</td>
+                                    <td class="positive">+$22.00</td>
+                                </tr>
+                                <tr>
+                                    <td>USD/CHF</td>
+                                    <td>Sell</td>
+                                    <td>0.8990</td>
+                                    <td>0.8976</td>
+                                    <td class="positive">+$14.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Profile Panel -->
+                <div id="profilePanel" class="panel-section" style="display: none;">
+                    <h3>User Profile</h3>
+                    <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
+                        <div style="flex: 1;">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" class="form-control" value="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Email</label>
+                                <input type="email" id="userEmail" class="form-control" value="john.doe@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="userPhone">Phone</label>
+                                <input type="tel" id="userPhone" class="form-control" value="+1 (555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="userCountry">Country</label>
+                                <select id="userCountry" class="form-control">
+                                    <option value="us" selected>United States</option>
+                                    <option value="uk">United Kingdom</option>
+                                    <option value="ca">Canada</option>
+                                    <option value="au">Australia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="flex: 1; text-align: center;">
+                            <img src="https://via.placeholder.com/150" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem;">
+                            <div>
+                                <button class="btn-primary" style="width: auto; padding: 8px 20px;">Change Photo</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary">Update Profile</button>
+                </div>
+                
+                <!-- Team Panel -->
+                <div id="teamPanel" class="panel-section" style="display: none;">
+                    <h3>My Team</h3>
+                    <div class="team-section">
+                        <h4>Direct Referrals (5)</h4>
+                        <div class="team-list">
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Alice Johnson</h4>
+                                <p>Referral: BH3M8N1P</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Robert Smith</h4>
+                                <p>Referral: BH5T9K2R</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Emma Wilson</h4>
+                                <p>Referral: BH7L4M8N</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Michael Brown</h4>
+                                <p>Referral: BH9P5Q6R</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Sarah Davis</h4>
+                                <p>Referral: BH2S7T8U</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-section">
+                        <h4>Team Network (19)</h4>
+                        <div class="team-list">
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>James Miller</h4>
+                                <p>Referral: BH4V9W1X</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Linda Garcia</h4>
+                                <p>Referral: BH6Y2Z3A</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>David Martinez</h4>
+                                <p>Referral: BH8B4C5D</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>Jennifer Lee</h4>
+                                <p>Referral: BH1E6F7G</p>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                                <h4>William Taylor</h4>
+                                <p>Referral: BH3H8I9J</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Income Panel -->
+                <div id="incomePanel" class="panel-section" style="display: none;">
+                    <h3>Income Overview</h3>
+                    <div class="dashboard-overview">
+                        <div class="dashboard-card">
+                            <h3>Trading Profit</h3>
+                            <p>$1,245.67</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Referral Bonus</h3>
+                            <p>$320.50</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Team Commission</h3>
+                            <p>$185.30</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Total Income</h3>
+                            <p>$1,751.47</p>
+                        </div>
+                    </div>
+                    
+                    <div class="market-overview">
+                        <h3>Income History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Source</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2023-06-15</td>
+                                    <td>Trading</td>
+                                    <td>EUR/USD Profit</td>
+                                    <td class="positive">+$25.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-14</td>
+                                    <td>Referral</td>
+                                    <td>Bonus from Alice Johnson</td>
+                                    <td class="positive">+$10.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-13</td>
+                                    <td>Team</td>
+                                    <td>Commission from Robert Smith</td>
+                                    <td class="positive">+$5.50</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-12</td>
+                                    <td>Trading</td>
+                                    <td>GBP/USD Profit</td>
+                                    <td class="positive">+$16.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-11</td>
+                                    <td>Trading</td>
+                                    <td>USD/JPY Profit</td>
+                                    <td class="positive">+$22.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Withdrawal Panel -->
+                <div id="withdrawalPanel" class="panel-section" style="display: none;">
+                    <h3>Withdraw Funds</h3>
+                    <div class="form-group">
+                        <label for="withdrawalAmount">Amount ($)</label>
+                        <input type="number" id="withdrawalAmount" class="form-control" placeholder="Enter amount to withdraw">
+                    </div>
+                    <div class="form-group">
+                        <label for="withdrawalMethod">Withdrawal Method</label>
+                        <select id="withdrawalMethod" class="form-control">
+                            <option value="bank">Bank Transfer</option>
+                            <option value="crypto">Cryptocurrency</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="withdrawalDetails">Withdrawal Details</label>
+                        <textarea id="withdrawalDetails" class="form-control" rows="4" placeholder="Enter your bank account details, crypto wallet address, or PayPal email"></textarea>
+                    </div>
+                    <button class="btn-primary">Submit Withdrawal Request</button>
+                    
+                    <div class="market-overview" style="margin-top: 2rem;">
+                        <h3>Withdrawal History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2023-06-10</td>
+                                    <td>$500.00</td>
+                                    <td>Bank Transfer</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-05</td>
+                                    <td>$300.00</td>
+                                    <td>Cryptocurrency</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-01</td>
+                                    <td>$200.00</td>
+                                    <td>PayPal</td>
+                                    <td><span class="status-badge status-processing">Processing</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Deposit Panel -->
+                <div id="depositPanel" class="panel-section" style="display: none;">
+                    <h3>Deposit Funds</h3>
+                    <div class="form-group">
+                        <label for="depositAmount">Amount ($)</label>
+                        <input type="number" id="depositAmount" class="form-control" placeholder="Enter amount to deposit">
+                    </div>
+                    <div class="form-group">
+                        <label for="depositMethod">Deposit Method</label>
+                        <select id="depositMethod" class="form-control">
+                            <option value="bank">Bank Transfer</option>
+                            <option value="crypto">Cryptocurrency</option>
+                            <option value="card">Credit/Debit Card</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="depositBonus">Select Bonus (Optional)</label>
+                        <select id="depositBonus" class="form-control">
+                            <option value="none">No Bonus</option>
+                            <option value="5">5% Bonus</option>
+                            <option value="10">10% Bonus</option>
+                            <option value="15">15% Bonus</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary">Proceed to Deposit</button>
+                    
+                    <div class="market-overview" style="margin-top: 2rem;">
+                        <h3>Deposit History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2023-06-12</td>
+                                    <td>$1,000.00</td>
+                                    <td>Bank Transfer</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-08</td>
+                                    <td>$500.00</td>
+                                    <td>Credit Card</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2023-06-01</td>
+                                    <td>$250.00</td>
+                                    <td>Cryptocurrency</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Support Panel -->
+                <div id="supportPanel" class="panel-section" style="display: none;">
+                    <h3>Support Center</h3>
+                    <div class="form-group">
+                        <label for="supportSubject">Subject</label>
+                        <input type="text" id="supportSubject" class="form-control" placeholder="Enter subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="supportMessage">Message</label>
+                        <textarea id="supportMessage" class="form-control" rows="6" placeholder="Describe your issue or question"></textarea>
+                    </div>
+                    <button class="btn-primary">Submit Ticket</button>
+                    
+                    <div class="market-overview" style="margin-top: 2rem;">
+                        <h3>Your Support Tickets</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1024</td>
+                                    <td>Withdrawal Issue</td>
+                                    <td>2023-06-10</td>
+                                    <td><span class="status-badge status-completed">Resolved</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1023</td>
+                                    <td>Account Verification</td>
+                                    <td>2023-06-05</td>
+                                    <td><span class="status-badge status-completed">Resolved</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1022</td>
+                                    <td>Trading Platform Question</td>
+                                    <td>2023-06-01</td>
+                                    <td><span class="status-badge status-processing">In Progress</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9SYoIYxj0d3shvER4hqGiDugfIwuCluI",
+            authDomain: "bithorizon-d3fac.firebaseapp.com",
+            projectId: "bithorizon-d3fac",
+            storageBucket: "bithorizon-d3fac.firebasestorage.app",
+            messagingSenderId: "400494505534",
+            appId: "1:400494505534:web:a0e16d82957e670b11ab6f",
+            measurementId: "G-BRV5F7G0XH"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const logoContainer = document.getElementById('logoContainer');
+        const panelMenuItems = document.querySelectorAll('.panel-menu-item');
+        const panelSections = document.querySelectorAll('.panel-section');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const notification = document.getElementById('notification');
+        const userName = document.getElementById('userName');
+        const userReferral = document.getElementById('userReferral');
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? 'var(--secondary-color)' : 'var(--danger-color)';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Logo click - redirect to home
+        logoContainer.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+        
+        // Panel Navigation
+        panelMenuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all menu items
+                panelMenuItems.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked item
+                item.classList.add('active');
+                
+                // Hide all panel sections
+                panelSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // Show selected panel section
+                const panelId = item.getAttribute('data-panel') + 'Panel';
+                const selectedPanel = document.getElementById(panelId);
+                if (selectedPanel) {
+                    selectedPanel.style.display = 'block';
+                }
+            });
+        });
+        
+        // Logout
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            auth.signOut()
+                .then(() => {
+                    // Clear localStorage
+                    localStorage.removeItem('bithorizon_user');
+                    
+                    // Redirect to login page
+                    window.location.href = 'login.html';
+                    
+                    showNotification('You have been logged out successfully');
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
+        });
+        
+        // Check if user is logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                if (user.emailVerified) {
+                    // Get user data from localStorage
+                    const userDataJSON = localStorage.getItem('bithorizon_user');
+                    
+                    if (userDataJSON) {
+                        const userData = JSON.parse(userDataJSON);
+                        
+                        // Set user name and referral code
+                        userName.textContent = userData.fullName;
+                        userReferral.textContent = 'Referral: ' + userData.referralCode;
+                    } else {
+                        // If no user data in localStorage, create basic data
+                        const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                        const userData = {
+                            fullName: user.displayName || 'User',
+                            email: user.email,
+                            referralCode,
+                            uid: user.uid
+                        };
+                        
+                        localStorage.setItem('bithorizon_user', JSON.stringify(userData));
+                        
+                        userName.textContent = userData.fullName;
+                        userReferral.textContent = 'Referral: ' + userData.referralCode;
+                    }
+                } else {
+                    // Email not verified
+                    auth.signOut();
+                    localStorage.removeItem('bithorizon_user');
+                    window.location.href = 'login.html';
+                }
+            } else {
+                // No user is signed in
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Handle form submissions (demo functionality)
+        document.getElementById('profilePanel').querySelector('.btn-primary').addEventListener('click', () => {
+            showNotification('Profile updated successfully!');
+        });
+        
+        document.getElementById('withdrawalPanel').querySelector('.btn-primary').addEventListener('click', () => {
+            const amount = document.getElementById('withdrawalAmount').value;
+            if (amount) {
+                showNotification('Withdrawal request submitted successfully!');
+                document.getElementById('withdrawalAmount').value = '';
+                document.getElementById('withdrawalDetails').value = '';
+            } else {
+                showNotification('Please enter withdrawal amount', 'error');
+            }
+        });
+        
+        document.getElementById('depositPanel').querySelector('.btn-primary').addEventListener('click', () => {
+            const amount = document.getElementById('depositAmount').value;
+            if (amount) {
+                showNotification('Deposit request submitted successfully!');
+                document.getElementById('depositAmount').value = '';
+            } else {
+                showNotification('Please enter deposit amount', 'error');
+            }
+        });
+        
+        document.getElementById('supportPanel').querySelector('.btn-primary').addEventListener('click', () => {
+            const subject = document.getElementById('supportSubject').value;
+            const message = document.getElementById('supportMessage').value;
+            if (subject && message) {
+                showNotification('Support ticket submitted successfully!');
+                document.getElementById('supportSubject').value = '';
+                document.getElementById('supportMessage').value = '';
+            } else {
+                showNotification('Please fill in all fields', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
