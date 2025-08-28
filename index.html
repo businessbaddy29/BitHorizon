@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BitHorizon.io - Forex Trading Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <style>
         :root {
             --primary-color: #1a73e8;
@@ -49,6 +52,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            cursor: pointer;
         }
         
         .logo {
@@ -57,28 +61,16 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
         }
         
         .company-name {
             font-size: 1.8rem;
             font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav a:hover {
             color: var(--primary-color);
         }
         
@@ -620,6 +612,19 @@
             color: var(--dark-color);
         }
         
+        /* Auth Choice Modal */
+        .auth-choice {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .auth-choice button {
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .hero-section {
@@ -628,10 +633,6 @@
             
             .hero-content h1 {
                 font-size: 2rem;
-            }
-            
-            nav ul {
-                gap: 1rem;
             }
             
             .panel-menu ul {
@@ -648,17 +649,10 @@
     <!-- Header -->
     <header>
         <div class="header-container">
-            <div class="logo-container">
-                <img src="https://via.placeholder.com/50" alt="BitHorizon Logo" class="logo" id="logoImage">
+            <div class="logo-container" id="logoContainer">
+                <img src="logo.png" alt="BitHorizon Logo" class="logo">
                 <span class="company-name">BitHorizon.io</span>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active" id="homeTab">Home</a></li>
-                    <li><a href="#" id="registerTab">Register</a></li>
-                    <li><a href="#" id="loginTab">Login</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
@@ -670,7 +664,7 @@
                 <div class="hero-content">
                     <h1>Master Forex Trading with BitHorizon</h1>
                     <p>Join thousands of traders worldwide who trust BitHorizon for their forex trading needs. Access real-time market data, advanced trading tools, and expert insights to maximize your trading potential.</p>
-                    <a href="#" class="btn" id="getStartedBtn">Get Started Today</a>
+                    <a href="register.html" class="btn">Get Started Today</a>
                 </div>
                 <div class="hero-image">
                     <img src="https://via.placeholder.com/600x400" alt="Forex Trading">
@@ -1255,25 +1249,14 @@
             <h2>Verify Your Email</h2>
             
             <div class="demo-notice">
-                <h4><i class="fas fa-info-circle"></i> Demo Mode</h4>
-                <p>For testing purposes, use OTP: <strong>123456</strong></p>
+                <h4><i class="fas fa-info-circle"></i> Verification Email Sent</h4>
+                <p>We've sent a verification email to your registered email address. Please check your inbox and click on the verification link to complete your registration.</p>
             </div>
             
-            <p>We've sent a verification code to your email. Please enter it below to complete your registration.</p>
-            <div class="otp-input">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-            </div>
+            <p>Didn't receive the email? Check your spam folder or click the button below to resend.</p>
             <form id="emailVerificationForm">
-                <button type="submit" class="btn-primary">Verify Email</button>
+                <button type="button" class="btn-primary" id="resendVerification">Resend Verification Email</button>
             </form>
-            <div class="auth-toggle">
-                Didn't receive the code? <a href="#" id="resendCode">Resend</a>
-            </div>
         </div>
     </div>
 
@@ -1331,15 +1314,25 @@
     <div id="notification" class="notification"></div>
 
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9SYoIYxj0d3shvER4hqGiDugfIwuCluI",
+            authDomain: "bithorizon-d3fac.firebaseapp.com",
+            projectId: "bithorizon-d3fac",
+            storageBucket: "bithorizon-d3fac.appspot.com",
+            messagingSenderId: "400494505534",
+            appId: "1:400494505534:web:abc123def456"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
         // DOM Elements
-        const homeTab = document.getElementById('homeTab');
-        const registerTab = document.getElementById('registerTab');
-        const loginTab = document.getElementById('loginTab');
+        const logoContainer = document.getElementById('logoContainer');
         const homeSection = document.getElementById('homeSection');
         const registerSection = document.getElementById('registerSection');
         const loginSection = document.getElementById('loginSection');
         const userPanel = document.getElementById('userPanel');
-        const getStartedBtn = document.getElementById('getStartedBtn');
         const registerForm = document.getElementById('registerForm');
         const loginForm = document.getElementById('loginForm');
         const googleLoginBtn = document.getElementById('googleLoginBtn');
@@ -1356,9 +1349,8 @@
         const panelMenuItems = document.querySelectorAll('.panel-menu-item');
         const panelSections = document.querySelectorAll('.panel-section');
         const logoutBtn = document.getElementById('logoutBtn');
-        const logoImage = document.getElementById('logoImage');
         const notification = document.getElementById('notification');
-        const resendCode = document.getElementById('resendCode');
+        const resendVerification = document.getElementById('resendVerification');
         const otpDigits = document.querySelectorAll('.otp-digit');
 
         // Temporary storage for registration data
@@ -1375,57 +1367,32 @@
             }, 3000);
         }
 
-        // Tab Navigation
-        homeTab.addEventListener('click', (e) => {
-            e.preventDefault();
-            setActiveTab(homeTab);
+        // Logo click - go to home
+        logoContainer.addEventListener('click', () => {
             homeSection.style.display = 'block';
             registerSection.style.display = 'none';
             loginSection.style.display = 'none';
             userPanel.style.display = 'none';
+            window.scrollTo(0, 0);
         });
 
-        registerTab.addEventListener('click', (e) => {
+        showLoginFromReg.addEventListener('click', (e) => {
             e.preventDefault();
-            setActiveTab(registerTab);
-            homeSection.style.display = 'none';
-            registerSection.style.display = 'block';
-            loginSection.style.display = 'none';
-            userPanel.style.display = 'none';
-        });
-
-        loginTab.addEventListener('click', (e) => {
-            e.preventDefault();
-            setActiveTab(loginTab);
             homeSection.style.display = 'none';
             registerSection.style.display = 'none';
             loginSection.style.display = 'block';
             userPanel.style.display = 'none';
         });
 
-        function setActiveTab(activeTab) {
-            [homeTab, registerTab, loginTab].forEach(tab => {
-                tab.classList.remove('active');
-            });
-            activeTab.classList.add('active');
-        }
-
-        getStartedBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            registerTab.click();
-        });
-
-        showLoginFromReg.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginTab.click();
-        });
-
         showRegisterFromLogin.addEventListener('click', (e) => {
             e.preventDefault();
-            registerTab.click();
+            homeSection.style.display = 'none';
+            registerSection.style.display = 'block';
+            loginSection.style.display = 'none';
+            userPanel.style.display = 'none';
         });
 
-        // Registration Form
+        // Registration Form with Firebase
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -1447,58 +1414,145 @@
                 password
             };
             
-            // Show email verification modal
-            registerSection.style.display = 'none';
-            emailVerificationModal.style.display = 'flex';
-            
-            // Log OTP for testing
-            console.log('Demo OTP for registration: 123456');
-            
-            showNotification('Registration successful! Please verify your email. Use OTP: 123456');
+            // Create user with Firebase
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Send verification email
+                    return userCredential.user.sendEmailVerification();
+                })
+                .then(() => {
+                    // Show email verification modal
+                    registerSection.style.display = 'none';
+                    emailVerificationModal.style.display = 'flex';
+                    
+                    showNotification('Registration successful! Please verify your email.');
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
         });
 
-        // Email Verification Form
-        emailVerificationForm.addEventListener('submit', (e) => {
+        // Resend Verification Email
+        resendVerification.addEventListener('click', () => {
+            const user = auth.currentUser;
+            
+            if (user) {
+                user.sendEmailVerification()
+                    .then(() => {
+                        showNotification('Verification email resent successfully!');
+                    })
+                    .catch((error) => {
+                        showNotification(error.message, 'error');
+                    });
+            }
+        });
+
+        // Login Form with Firebase
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Get OTP from input fields
-            let otp = '';
-            otpDigits.forEach(input => {
-                otp += input.value;
-            });
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             
-            if (otp.length !== 6) {
-                showNotification('Please enter a valid 6-digit OTP', 'error');
-                return;
-            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    
+                    // Check if email is verified
+                    if (user.emailVerified) {
+                        // Generate random referral code
+                        const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                        
+                        // Store user data (in a real app, this would be saved to a database)
+                        const userData = {
+                            fullName: tempRegistrationData.fullName || user.displayName || 'User',
+                            email: user.email,
+                            referralCode,
+                            uid: user.uid
+                        };
+                        
+                        // Save to localStorage for demo purposes
+                        localStorage.setItem('bithorizon_user', JSON.stringify(userData));
+                        
+                        // Show user panel
+                        homeSection.style.display = 'none';
+                        registerSection.style.display = 'none';
+                        loginSection.style.display = 'none';
+                        userPanel.style.display = 'block';
+                        
+                        // Set user name and referral code
+                        document.getElementById('userName').textContent = userData.fullName;
+                        document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
+                        
+                        showNotification('Login successful! Welcome to BitHorizon.io');
+                    } else {
+                        // Email not verified
+                        auth.signOut();
+                        showNotification('Please verify your email before logging in.', 'error');
+                    }
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
+        });
+
+        // Google Login with Firebase
+        googleLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
             
-            // Simulate OTP verification
-            if (otp === '123456') { // In a real app, this would be verified server-side
-                // Complete registration
-                emailVerificationModal.style.display = 'none';
-                
-                // Generate random referral code
-                const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
-                
-                // Store user data (in a real app, this would be saved to a database)
-                const userData = {
-                    ...tempRegistrationData,
-                    referralCode,
-                    registered: true
-                };
-                
-                // Save to localStorage for demo purposes
-                localStorage.setItem('bithorizon_user', JSON.stringify(userData));
-                
-                showNotification('Email verified successfully! Your account has been created.');
-                
-                // Redirect to login
-                setTimeout(() => {
-                    loginTab.click();
-                }, 1500);
-            } else {
-                showNotification('Invalid OTP. Please use 123456 for demo.', 'error');
-            }
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    
+                    // Generate random referral code
+                    const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                    
+                    // Store user data
+                    const userData = {
+                        fullName: user.displayName,
+                        email: user.email,
+                        referralCode,
+                        uid: user.uid
+                    };
+                    
+                    localStorage.setItem('bithorizon_user', JSON.stringify(userData));
+                    
+                    // Show user panel
+                    homeSection.style.display = 'none';
+                    registerSection.style.display = 'none';
+                    loginSection.style.display = 'none';
+                    userPanel.style.display = 'block';
+                    
+                    // Set user name and referral code
+                    document.getElementById('userName').textContent = userData.fullName;
+                    document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
+                    
+                    showNotification('Google login successful! Welcome to BitHorizon.io');
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
+        });
+
+        // Forgot Password
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordModal.style.display = 'flex';
+        });
+
+        // Forgot Password Form
+        forgotPasswordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value;
+            
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    forgotPasswordModal.style.display = 'none';
+                    showNotification('Password reset email sent successfully!');
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
         });
 
         // OTP Input Handling
@@ -1516,98 +1570,6 @@
                     otpDigits[index - 1].focus();
                 }
             });
-        });
-
-        // Resend Code
-        resendCode.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('Demo OTP for registration: 123456');
-            showNotification('Verification code resent to your email. Use OTP: 123456');
-        });
-
-        // Login Form
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Check if user exists in localStorage (for demo purposes)
-            const userDataJSON = localStorage.getItem('bithorizon_user');
-            
-            if (userDataJSON) {
-                const userData = JSON.parse(userDataJSON);
-                
-                if (userData.email === email && userData.password === password && userData.registered) {
-                    // Show user panel
-                    homeSection.style.display = 'none';
-                    registerSection.style.display = 'none';
-                    loginSection.style.display = 'none';
-                    userPanel.style.display = 'block';
-                    
-                    // Set user name and referral code
-                    document.getElementById('userName').textContent = userData.fullName;
-                    document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
-                    
-                    showNotification('Login successful! Welcome to BitHorizon.io');
-                } else {
-                    showNotification('Invalid email or password!', 'error');
-                }
-            } else {
-                showNotification('User not found. Please register first.', 'error');
-            }
-        });
-
-        // Google Login
-        googleLoginBtn.addEventListener('click', () => {
-            // Simulate Google login
-            const fullName = 'Google User';
-            const email = 'google.user@example.com';
-            const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
-            
-            // Store user data
-            const userData = {
-                fullName,
-                email,
-                referralCode,
-                registered: true
-            };
-            
-            localStorage.setItem('bithorizon_user', JSON.stringify(userData));
-            
-            // Show user panel
-            homeSection.style.display = 'none';
-            registerSection.style.display = 'none';
-            loginSection.style.display = 'none';
-            userPanel.style.display = 'block';
-            
-            // Set user name and referral code
-            document.getElementById('userName').textContent = fullName;
-            document.getElementById('userReferral').textContent = 'Referral: ' + referralCode;
-            
-            showNotification('Google login successful! Welcome to BitHorizon.io');
-        });
-
-        // Forgot Password
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotPasswordModal.style.display = 'flex';
-        });
-
-        // Forgot Password Form
-        forgotPasswordForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('resetEmail').value;
-            
-            if (email) {
-                forgotPasswordModal.style.display = 'none';
-                otpModal.style.display = 'flex';
-                
-                // Log OTP for testing
-                console.log('Demo OTP for password reset: 123456');
-                
-                showNotification('OTP sent to your email address. Use OTP: 123456');
-            }
         });
 
         // OTP Form
@@ -1636,17 +1598,7 @@
                         otpModal.style.display = 'none';
                         showNotification('Password reset successful!');
                         
-                        // Update user password in localStorage
-                        const email = document.getElementById('resetEmail').value;
-                        const userDataJSON = localStorage.getItem('bithorizon_user');
-                        
-                        if (userDataJSON) {
-                            const userData = JSON.parse(userDataJSON);
-                            if (userData.email === email) {
-                                userData.password = newPassword;
-                                localStorage.setItem('bithorizon_user', JSON.stringify(userData));
-                            }
-                        }
+                        // In a real app, you would update the user's password in Firebase here
                     } else {
                         showNotification('Invalid OTP. Please use 123456 for demo.', 'error');
                     }
@@ -1694,33 +1646,45 @@
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Show home section
-            userPanel.style.display = 'none';
-            homeSection.style.display = 'block';
-            setActiveTab(homeTab);
-            
-            showNotification('You have been logged out successfully');
+            auth.signOut()
+                .then(() => {
+                    // Show home section
+                    userPanel.style.display = 'none';
+                    homeSection.style.display = 'block';
+                    
+                    showNotification('You have been logged out successfully');
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
         });
 
-        // Logo Upload (Simulated)
-        logoImage.addEventListener('click', () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        logoImage.src = event.target.result;
-                        showNotification('Logo updated successfully');
-                    };
-                    reader.readAsDataURL(file);
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                if (user.emailVerified) {
+                    // Get user data from localStorage
+                    const userDataJSON = localStorage.getItem('bithorizon_user');
+                    
+                    if (userDataJSON) {
+                        const userData = JSON.parse(userDataJSON);
+                        
+                        // Show user panel
+                        homeSection.style.display = 'none';
+                        registerSection.style.display = 'none';
+                        loginSection.style.display = 'none';
+                        userPanel.style.display = 'block';
+                        
+                        // Set user name and referral code
+                        document.getElementById('userName').textContent = userData.fullName;
+                        document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
+                    }
+                } else {
+                    // Email not verified
+                    auth.signOut();
                 }
-            };
-            
-            input.click();
+            }
         });
     </script>
 </body>
