@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitHorizon.io - Login & Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --danger-color: #ea4335;
+            --warning-color: #fbbc05;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .auth-image {
+            flex: 1;
+            background: linear-gradient(135deg, #1a73e8, #34a853);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .auth-image h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-image p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .auth-image img {
+            max-width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .auth-forms {
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .auth-section {
+            display: none;
+        }
+        
+        .auth-section.active {
+            display: block;
+        }
+        
+        .auth-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0d62d9;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .divider span {
+            background-color: white;
+            padding: 0 1rem;
+            position: relative;
+        }
+        
+        .google-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            color: var(--dark-color);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .google-login:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .auth-toggle {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .auth-toggle a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Error and Success Messages */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .login-error {
+            color: var(--danger-color);
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+            padding: 10px;
+            background-color: #fdecea;
+            border-radius: 5px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 5%;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-bottom {
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 3000;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+            
+            .auth-image {
+                padding: 1.5rem;
+            }
+            
+            .auth-image h2 {
+                font-size: 2rem;
+            }
+            
+            .auth-image p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container" id="logoContainer">
+                <img src="https://via.placeholder.com/50" alt="BitHorizon Logo" class="logo">
+                <span class="company-name">BitHorizon.io</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="auth-container">
+            <div class="auth-image">
+                <h2>Welcome to BitHorizon</h2>
+                <p>Your trusted partner in forex trading. Join thousands of traders worldwide.</p>
+                <img src="https://via.placeholder.com/400x300" alt="Forex Trading">
+            </div>
+            
+            <div class="auth-forms">
+                <!-- Registration Section -->
+                <section id="registerSection" class="auth-section active">
+                    <h2>Create Your Account</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+                            <div id="fullNameError" class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="regEmail">Email Address</label>
+                            <input type="email" id="regEmail" class="form-control" placeholder="Enter your email" required>
+                            <div id="regEmailError" class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword">Password</label>
+                            <input type="password" id="regPassword" class="form-control" placeholder="Create a password" required>
+                            <div id="regPasswordError" class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                            <div id="confirmPasswordError" class="error-message"></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Register</button>
+                        <div id="registerSuccess" class="success-message"></div>
+                    </form>
+                    <div class="auth-toggle">
+                        Already have an account? <a href="#" id="showLoginFromReg">Login</a>
+                    </div>
+                </section>
+
+                <!-- Login Section -->
+                <section id="loginSection" class="auth-section">
+                    <h2>Login to Your Account</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                            <div id="emailError" class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                            <div id="passwordError" class="error-message"></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Login</button>
+                        <div id="loginError" class="login-error"></div>
+                    </form>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    <button type="button" class="google-login" id="googleLoginBtn">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                    <div class="auth-toggle">
+                        Don't have an account? <a href="#" id="showRegisterFromLogin">Register</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Trading Platform</a></li>
+                    <li><a href="#">Education</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Risk Disclosure</a></li>
+                    <li><a href="#">AML Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> support@bithorizon.io</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 BitHorizon.io. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9SYoIYxj0d3shvER4hqGiDugfIwuCluI",
+            authDomain: "bithorizon-d3fac.firebaseapp.com",
+            projectId: "bithorizon-d3fac",
+            storageBucket: "bithorizon-d3fac.firebasestorage.app",
+            messagingSenderId: "400494505534",
+            appId: "1:400494505534:web:a0e16d82957e670b11ab6f",
+            measurementId: "G-BRV5F7G0XH"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const logoContainer = document.getElementById('logoContainer');
+        const registerSection = document.getElementById('registerSection');
+        const loginSection = document.getElementById('loginSection');
+        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const showLoginFromReg = document.getElementById('showLoginFromReg');
+        const showRegisterFromLogin = document.getElementById('showRegisterFromLogin');
+        const notification = document.getElementById('notification');
+        
+        // Error elements
+        const fullNameError = document.getElementById('fullNameError');
+        const regEmailError = document.getElementById('regEmailError');
+        const regPasswordError = document.getElementById('regPasswordError');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const loginError = document.getElementById('loginError');
+        const registerSuccess = document.getElementById('registerSuccess');
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? 'var(--secondary-color)' : 'var(--danger-color)';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Clear error messages
+        function clearErrors() {
+            fullNameError.textContent = '';
+            fullNameError.style.display = 'none';
+            regEmailError.textContent = '';
+            regEmailError.style.display = 'none';
+            regPasswordError.textContent = '';
+            regPasswordError.style.display = 'none';
+            confirmPasswordError.textContent = '';
+            confirmPasswordError.style.display = 'none';
+            emailError.textContent = '';
+            emailError.style.display = 'none';
+            passwordError.textContent = '';
+            passwordError.style.display = 'none';
+            loginError.textContent = '';
+            loginError.style.display = 'none';
+            registerSuccess.textContent = '';
+            registerSuccess.style.display = 'none';
+        }
+        
+        // Logo click - redirect to home
+        logoContainer.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+        
+        // Show login from registration
+        showLoginFromReg.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerSection.classList.remove('active');
+            loginSection.classList.add('active');
+            clearErrors();
+        });
+        
+        // Show registration from login
+        showRegisterFromLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginSection.classList.remove('active');
+            registerSection.classList.add('active');
+            clearErrors();
+        });
+        
+        // Registration Form with Firebase
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearErrors();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match!';
+                confirmPasswordError.style.display = 'block';
+                return;
+            }
+            
+            // Create user with Firebase
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Update user profile with display name
+                    return userCredential.user.updateProfile({
+                        displayName: fullName
+                    }).then(() => {
+                        // Send verification email
+                        return userCredential.user.sendEmailVerification();
+                    });
+                })
+                .then(() => {
+                    // Show success message
+                    registerSuccess.textContent = 'Registration successful! Please check your email for verification.';
+                    registerSuccess.style.display = 'block';
+                    
+                    // Clear form
+                    registerForm.reset();
+                    
+                    // Show notification
+                    showNotification('Registration successful! Please verify your email.');
+                    
+                    // Switch to login form after a delay
+                    setTimeout(() => {
+                        registerSection.classList.remove('active');
+                        loginSection.classList.add('active');
+                        clearErrors();
+                    }, 3000);
+                })
+                .catch((error) => {
+                    let errorMessage = error.message;
+                    
+                    // Handle specific Firebase errors
+                    if (error.code === 'auth/email-already-in-use') {
+                        regEmailError.textContent = 'This email is already registered. Please login or use a different email.';
+                        regEmailError.style.display = 'block';
+                    } else if (error.code === 'auth/weak-password') {
+                        regPasswordError.textContent = 'Password is too weak. Please use a stronger password.';
+                        regPasswordError.style.display = 'block';
+                    } else if (error.code === 'auth/invalid-email') {
+                        regEmailError.textContent = 'Please enter a valid email address.';
+                        regEmailError.style.display = 'block';
+                    } else {
+                        // Generic error
+                        regEmailError.textContent = errorMessage;
+                        regEmailError.style.display = 'block';
+                    }
+                });
+        });
+        
+        // Login Form with Firebase
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearErrors();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    
+                    // Check if email is verified
+                    if (user.emailVerified) {
+                        // Generate random referral code
+                        const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                        
+                        // Store user data (in a real app, this would be saved to a database)
+                        const userData = {
+                            fullName: user.displayName || 'User',
+                            email: user.email,
+                            referralCode,
+                            uid: user.uid
+                        };
+                        
+                        // Save to localStorage for demo purposes
+                        localStorage.setItem('bithorizon_user', JSON.stringify(userData));
+                        
+                        // Redirect to dashboard
+                        window.location.href = 'dashboard.html';
+                        
+                        showNotification('Login successful! Welcome to BitHorizon.io');
+                    } else {
+                        // Email not verified
+                        auth.signOut();
+                        loginError.textContent = 'Please verify your email address before logging in.';
+                        loginError.style.display = 'block';
+                        
+                        // Show option to resend verification email
+                        setTimeout(() => {
+                            if (confirm('Would you like us to resend the verification email?')) {
+                                user.sendEmailVerification()
+                                    .then(() => {
+                                        showNotification('Verification email resent successfully!');
+                                    })
+                                    .catch((error) => {
+                                        showNotification('Failed to resend verification email: ' + error.message, 'error');
+                                    });
+                            }
+                        }, 1000);
+                    }
+                })
+                .catch((error) => {
+                    let errorMessage = error.message;
+                    
+                    // Handle specific Firebase errors
+                    if (error.code === 'auth/user-not-found') {
+                        emailError.textContent = 'No account found with this email. Please register first.';
+                        emailError.style.display = 'block';
+                    } else if (error.code === 'auth/wrong-password') {
+                        passwordError.textContent = 'Incorrect password. Please try again.';
+                        passwordError.style.display = 'block';
+                    } else if (error.code === 'auth/invalid-email') {
+                        emailError.textContent = 'Please enter a valid email address.';
+                        emailError.style.display = 'block';
+                    } else if (error.code === 'auth/user-disabled') {
+                        emailError.textContent = 'This account has been disabled. Please contact support.';
+                        emailError.style.display = 'block';
+                    } else {
+                        // Generic error
+                        emailError.textContent = errorMessage;
+                        emailError.style.display = 'block';
+                    }
+                });
+        });
+        
+        // Google Login with Firebase
+        googleLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    
+                    // Generate random referral code
+                    const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                    
+                    // Store user data
+                    const userData = {
+                        fullName: user.displayName,
+                        email: user.email,
+                        referralCode,
+                        uid: user.uid
+                    };
+                    
+                    localStorage.setItem('bithorizon_user', JSON.stringify(userData));
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                    
+                    showNotification('Google login successful! Welcome to BitHorizon.io');
+                })
+                .catch((error) => {
+                    showNotification(error.message, 'error');
+                });
+        });
+        
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                if (user.emailVerified) {
+                    // Redirect to dashboard if user is verified
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Email not verified
+                    auth.signOut();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
