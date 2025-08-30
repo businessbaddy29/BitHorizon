@@ -4,643 +4,362 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BitHorizon.io - Forex Trading Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <meta name="description" content="Trade global currencies with BitHorizon.io's advanced tools, real-time data, and expert insights.">
+    <meta name="keywords" content="forex trading, currency trading, financial markets, BitHorizon">
+    <meta property="og:title" content="BitHorizon.io - Forex Trading Platform">
+    <meta property="og:description" content="Master the forex market with advanced tools and expert analysis.">
+    <meta property="og:image" content="https://i.imgur.com/9k0WQYt.png">
+    <meta property="og:url" content="https://www.bithorizon.io">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #34a853;
-            --dark-color: #202124;
-            --light-color: #f8f9fa;
-            --danger-color: #ea4335;
-            --warning-color: #fbbc05;
+            --primary-color: #00008B;
+            --accent-color: #0066cc;
+            --text-color: #333;
+            --light-text: #555;
+            --background-light: #f0f8ff;
+            --white: #ffffff;
+            --footer-text: #ccc;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: #f5f7fa;
-            color: var(--dark-color);
+            background-color: var(--white);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-        
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
         /* Header Styles */
         header {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 1rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: var(--primary-color);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--accent-color);
         }
-        
+
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
-        .logo-container {
+
+        .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
-            cursor: pointer;
         }
-        
-        .logo {
-            width: 50px;
+
+        .logo img {
             height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-            transition: transform 0.3s;
+            margin-right: 15px;
         }
-        
-        .logo:hover {
-            transform: scale(1.05);
-        }
-        
-        .company-name {
-            font-size: 1.8rem;
+
+        .logo a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 24px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo a:hover {
+            color: var(--accent-color);
+        }
+
+        nav {
+            role: "navigation";
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--white);
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
             color: var(--primary-color);
         }
-        
-        /* Main Content */
-        main {
-            margin-top: 80px;
-            padding: 2rem 5%;
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--light-text);
         }
-        
-        .hero-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
-            margin-bottom: 4rem;
-        }
-        
-        .hero-content {
-            flex: 1;
-        }
-        
-        .hero-content h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark-color);
-        }
-        
-        .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            color: #5f6368;
-        }
-        
+
         .btn {
             display: inline-block;
-            padding: 12px 30px;
             background-color: var(--primary-color);
-            color: white;
-            border: none;
+            color: var(--white);
+            padding: 15px 35px;
             border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s, transform 0.3s;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        /* Trading View Widget Section */
+        .trading-section {
+            padding: 40px 0;
+            background-color: var(--white);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .trading-section .container {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        .tradingview-widget-container {
+            height: 60vh;
+            max-height: 600px;
+            width: 100%;
+        }
+
+        .tradingview-widget-copyright {
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        .tradingview-widget-copyright a {
+            color: var(--accent-color);
             text-decoration: none;
         }
-        
-        .btn:hover {
-            background-color: #0d62d9;
+
+        /* Market Overview Section */
+        .market-overview {
+            padding: 80px 0;
+            background-color: var(--background-light);
         }
-        
-        .hero-image {
-            flex: 1;
+
+        .section-title {
             text-align: center;
+            margin-bottom: 50px;
         }
-        
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
         }
-        
-        /* Features Section */
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            gap: 30px;
+            margin-top: 50px;
         }
-        
+
         .feature-card {
-            background-color: white;
-            padding: 2rem;
+            background-color: var(--white);
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
+            border-top: 4px solid var(--accent-color);
+            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.2);
         }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
+
         .feature-card h3 {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
         }
-        
+
         .feature-card p {
-            color: #5f6368;
-            line-height: 1.6;
+            color: var(--light-text);
         }
-        
-        /* Market Overview Section */
-        .market-overview {
-            background-color: white;
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 4rem;
-        }
-        
-        .market-overview h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .market-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .market-card {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .market-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .market-card p {
-            color: #5f6368;
-            margin-bottom: 0.5rem;
-        }
-        
-        .market-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        .positive {
-            color: var(--secondary-color);
-        }
-        
-        .negative {
-            color: var(--danger-color);
-        }
-        
-        /* Login/Registration Section */
-        .auth-section {
-            background-color: white;
-            max-width: 500px;
-            margin: 0 auto 4rem;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .auth-section h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
-        }
-        
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-options a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-primary:hover {
-            background-color: #0d62d9;
-        }
-        
-        .divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            position: relative;
-        }
-        
-        .divider::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background-color: #ddd;
-        }
-        
-        .divider span {
-            background-color: white;
-            padding: 0 1rem;
-            position: relative;
-        }
-        
-        .google-login {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 12px;
-            background-color: white;
-            color: var(--dark-color);
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .google-login:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .auth-toggle {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        .auth-toggle a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
+
         /* Footer */
         footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 3rem 5%;
+            background-color: var(--primary-color);
+            padding: 70px 0 20px;
+            border-top: 2px solid var(--accent-color);
         }
-        
+
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
         }
-        
+
         .footer-column h3 {
             font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
+            margin-bottom: 25px;
+            color: var(--white);
+            position: relative;
         }
-        
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--white);
+        }
+
+        .footer-column p {
+            margin-bottom: 20px;
+            color: var(--footer-text);
+        }
+
         .footer-column ul {
             list-style: none;
         }
-        
+
         .footer-column ul li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 12px;
         }
-        
-        .footer-column a {
-            color: #e0e0e0;
+
+        .footer-column ul li a {
+            color: var(--white);
             text-decoration: none;
             transition: color 0.3s;
         }
-        
-        .footer-column a:hover {
-            color: var(--primary-color);
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
         }
-        
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-info li i {
+            color: var(--white);
+            margin-right: 10px;
+            margin-top: 5px;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .contact-info li a,
+        .contact-info li span {
+            color: var(--white);
+        }
+
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid #444;
-            color: #aaa;
-        }
-        
-        /* User Panel Styles */
-        .user-panel {
-            display: none;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        
-        .panel-header {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .panel-header h2 {
-            font-size: 1.8rem;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .panel-menu {
-            display: flex;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .panel-menu ul {
-            display: flex;
-            list-style: none;
-            width: 100%;
-        }
-        
-        .panel-menu li {
-            flex: 1;
-        }
-        
-        .panel-menu a {
-            display: block;
-            padding: 1rem;
-            text-align: center;
-            color: var(--dark-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        
-        .panel-menu a:hover, .panel-menu a.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .panel-content {
-            padding: 2rem;
-        }
-        
-        .dashboard-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .dashboard-card {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .dashboard-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #5f6368;
-        }
-        
-        .dashboard-card p {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .team-section {
-            margin-bottom: 2rem;
-        }
-        
-        .team-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .team-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        
-        .team-member {
-            background-color: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .team-member img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 0.5rem;
-        }
-        
-        .team-member h4 {
-            font-size: 1rem;
-            margin-bottom: 0.2rem;
-        }
-        
-        .team-member p {
+            padding-top: 20px;
+            border-top: 1px solid var(--white);
+            color: var(--white);
             font-size: 0.9rem;
-            color: #5f6368;
         }
-        
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #5f6368;
-        }
-        
-        .close-modal:hover {
-            color: var(--dark-color);
-        }
-        
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: none;
-            z-index: 3000;
-        }
-        
-        /* OTP Input Styles */
-        .otp-input {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 1.5rem 0;
-        }
-        
-        .otp-input input {
-            width: 50px;
-            height: 50px;
-            text-align: center;
-            font-size: 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .otp-input input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
-        }
-        
-        .demo-notice {
-            background-color: #e8f0fe;
-            border-left: 4px solid var(--primary-color);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 4px;
-        }
-        
-        .demo-notice h4 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-        
-        .demo-notice p {
-            color: var(--dark-color);
-        }
-        
-        /* Auth Choice Modal */
-        .auth-choice {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .auth-choice button {
-            padding: 1rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-section {
+            .header-container {
                 flex-direction: column;
+                text-align: center;
             }
-            
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-            
-            .panel-menu ul {
+
+            nav ul {
+                margin-top: 20px;
                 flex-wrap: wrap;
+                justify-content: center;
             }
-            
-            .panel-menu li {
-                flex: 1 0 50%;
+
+            nav ul li {
+                margin: 5px 15px;
+            }
+
+            .hero {
+                min-height: 50vh;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .tradingview-widget-container {
+                height: 40vh;
+                max-height: 400px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -648,1044 +367,175 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="header-container">
-            <div class="logo-container" id="logoContainer">
-                <img src="logo.png" alt="BitHorizon Logo" class="logo">
-                <span class="company-name">BitHorizon.io</span>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="/">
+                    <img src="https://i.imgur.com/9k0WQYt.png" alt="BitHorizon Forex Trading Logo">
+                    <span>BitHorizon.io</span>
+                </a>
             </div>
+            <nav role="navigation">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/platform">Trading Platform</a></li>
+                    <li><a href="/education">Education</a></li>
+                    <li><a href="/login">Login</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Home Section -->
-        <section id="homeSection">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <h1>Master Forex Trading with BitHorizon</h1>
-                    <p>Join thousands of traders worldwide who trust BitHorizon for their forex trading needs. Access real-time market data, advanced trading tools, and expert insights to maximize your trading potential.</p>
-                    <a href="register.html" class="btn">Get Started Today</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Master the Forex Market</h1>
+                <p>Trade global currencies with advanced tools, real-time data, and expert insights</p>
+                <a href="/signup" class="btn">Get Started Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading View Widget Section -->
+    <section class="trading-section">
+        <div class="container">
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                    <a href="https://www.tradingview.com/symbols/OANDA-XAUUSD/?exchange=OANDA" rel="noopener nofollow" target="_blank">
+                        <span class="blue-text">XAUUSD chart by TradingView</span>
+                    </a>
                 </div>
-                <div class="hero-image">
-                    
-                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                {
+                    "allow_symbol_change": true,
+                    "calendar": false,
+                    "details": false,
+                    "hide_side_toolbar": true,
+                    "hide_top_toolbar": false,
+                    "hide_legend": false,
+                    "hide_volume": false,
+                    "hotlist": false,
+                    "interval": "1",
+                    "locale": "en",
+                    "save_image": true,
+                    "style": "1",
+                    "symbol": "OANDA:XAUUSD",
+                    "theme": "light",
+                    "timezone": "Etc/UTC",
+                    "backgroundColor": "#ffffff",
+                    "gridColor": "rgba(46, 46, 46, 0.06)",
+                    "watchlist": [],
+                    "withdateranges": false,
+                    "studies": [],
+                    "autosize": true
+                }
+                </script>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Overview Section -->
+    <section class="market-overview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Global Forex Market</h2>
+                <p>The foreign exchange market is the largest and most liquid financial market in the world, with trillions of dollars traded daily.</p>
             </div>
 
             <div class="features">
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
+                    <h3>24/5 Market Access</h3>
+                    <p>Trade currencies 24 hours a day, 5 days a week across major financial centers worldwide.</p>
+                </div>
+                <div class="feature-card">
                     <h3>Advanced Trading Tools</h3>
-                    <p>Access professional-grade trading tools, real-time charts, and technical analysis to make informed trading decisions.</p>
+                    <p>Access cutting-edge charting, technical analysis, and risk management tools to enhance your trading.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Secure & Reliable</h3>
-                    <p>Your funds and data are protected with bank-level security and encryption. Trade with peace of mind.</p>
+                    <h3>Expert Market Analysis</h3>
+                    <p>Receive daily market insights, economic calendars, and analysis from our team of forex experts.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Expert Support</h3>
-                    <p>Our team of trading experts is available 24/7 to assist you with any questions or issues you may have.</p>
+                    <h3>Educational Resources</h3>
+                    <p>Learn forex trading strategies, risk management, and market fundamentals through our comprehensive courses.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Competitive Spreads</h3>
+                    <p>Benefit from tight spreads and low commissions on major, minor, and exotic currency pairs.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Secure Trading Environment</h3>
+                    <p>Trade with confidence on our secure platform with advanced encryption and regulatory compliance.</p>
                 </div>
             </div>
-
-            <div class="market-overview">
-                <h2>Forex Market Overview</h2>
-                <div class="market-cards">
-                    <div class="market-card">
-                        <h4>EUR/USD</h4>
-                        <p>Euro / US Dollar</p>
-                        <div class="market-value positive">1.0875 <i class="fas fa-arrow-up"></i> 0.25%</div>
-                    </div>
-                    <div class="market-card">
-                        <h4>GBP/USD</h4>
-                        <p>British Pound / US Dollar</p>
-                        <div class="market-value negative">1.2634 <i class="fas fa-arrow-down"></i> 0.18%</div>
-                    </div>
-                    <div class="market-card">
-                        <h4>USD/JPY</h4>
-                        <p>US Dollar / Japanese Yen</p>
-                        <div class="market-value positive">149.72 <i class="fas fa-arrow-up"></i> 0.32%</div>
-                    </div>
-                    <div class="market-card">
-                        <h4>USD/CHF</h4>
-                        <p>US Dollar / Swiss Franc</p>
-                        <div class="market-value positive">0.8976 <i class="fas fa-arrow-up"></i> 0.15%</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Registration Section -->
-        <section id="registerSection" class="auth-section" style="display: none;">
-            <h2>Create Your Account</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="regEmail">Email Address</label>
-                    <input type="email" id="regEmail" class="form-control" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="regPassword">Password</label>
-                    <input type="password" id="regPassword" class="form-control" placeholder="Create a password" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
-                </div>
-                <button type="submit" class="btn-primary">Register</button>
-            </form>
-            <div class="auth-toggle">
-                Already have an account? <a href="#" id="showLoginFromReg">Login</a>
-            </div>
-        </section>
-
-        <!-- Login Section -->
-        <section id="loginSection" class="auth-section" style="display: none;">
-            <h2>Login to Your Account</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
-                </div>
-                <div class="form-options">
-                    <div>
-                        <input type="checkbox" id="rememberMe">
-                        <label for="rememberMe">Remember me</label>
-                    </div>
-                    <a href="#" id="forgotPasswordLink">Forgot Password?</a>
-                </div>
-                <button type="submit" class="btn-primary">Login</button>
-                <div class="divider">
-                    <span>OR</span>
-                </div>
-                <button type="button" class="google-login" id="googleLoginBtn">
-                    <i class="fab fa-google"></i> Continue with Google
-                </button>
-            </form>
-            <div class="auth-toggle">
-                Don't have an account? <a href="#" id="showRegisterFromLogin">Register</a>
-            </div>
-        </section>
-
-        <!-- User Panel -->
-        <section id="userPanel" class="user-panel">
-            <div class="panel-header">
-                <h2>User Panel</h2>
-                <div class="user-info">
-                    <img src="https://via.placeholder.com/40" alt="User Avatar" class="user-avatar">
-                    <div>
-                        <div id="userName">John Doe</div>
-                        <div id="userReferral">Referral: BH7X9K2P</div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-menu">
-                <ul>
-                    <li><a href="#" class="panel-menu-item active" data-panel="dashboard">Dashboard</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="profile">User Profile</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="team">My Team</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="income">Income</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="withdrawal">Withdrawal</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="deposit">Deposit</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="support">Support</a></li>
-                    <li><a href="#" id="logoutBtn">Logout</a></li>
-                </ul>
-            </div>
-            <div class="panel-content">
-                <!-- Dashboard Panel -->
-                <div id="dashboardPanel" class="panel-section">
-                    <h3>Dashboard Overview</h3>
-                    <div class="dashboard-overview">
-                        <div class="dashboard-card">
-                            <h3>Account Balance</h3>
-                            <p>$5,432.10</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Total Profit</h3>
-                            <p>$1,245.67</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Active Trades</h3>
-                            <p>8</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Team Members</h3>
-                            <p>24</p>
-                        </div>
-                    </div>
-                    
-                    <div class="market-overview">
-                        <h3>Your Recent Trades</h3>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background-color: #f8f9fa;">
-                                    <th style="padding: 10px; text-align: left;">Pair</th>
-                                    <th style="padding: 10px; text-align: left;">Type</th>
-                                    <th style="padding: 10px; text-align: left;">Open</th>
-                                    <th style="padding: 10px; text-align: left;">Close</th>
-                                    <th style="padding: 10px; text-align: left;">Profit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 10px;">EUR/USD</td>
-                                    <td style="padding: 10px;">Buy</td>
-                                    <td style="padding: 10px;">1.0850</td>
-                                    <td style="padding: 10px;">1.0875</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$25.00</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">GBP/USD</td>
-                                    <td style="padding: 10px;">Sell</td>
-                                    <td style="padding: 10px;">1.2650</td>
-                                    <td style="padding: 10px;">1.2634</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$16.00</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">USD/JPY</td>
-                                    <td style="padding: 10px;">Buy</td>
-                                    <td style="padding: 10px;">149.50</td>
-                                    <td style="padding: 10px;">149.72</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$22.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Profile Panel -->
-                <div id="profilePanel" class="panel-section" style="display: none;">
-                    <h3>User Profile</h3>
-                    <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="fullName">Full Name</label>
-                                <input type="text" id="fullName" class="form-control" value="John Doe">
-                            </div>
-                            <div class="form-group">
-                                <label for="userEmail">Email</label>
-                                <input type="email" id="userEmail" class="form-control" value="john.doe@example.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="userPhone">Phone</label>
-                                <input type="tel" id="userPhone" class="form-control" value="+1 (555) 123-4567">
-                            </div>
-                            <div class="form-group">
-                                <label for="userCountry">Country</label>
-                                <select id="userCountry" class="form-control">
-                                    <option value="us" selected>United States</option>
-                                    <option value="uk">United Kingdom</option>
-                                    <option value="ca">Canada</option>
-                                    <option value="au">Australia</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div style="flex: 1; text-align: center;">
-                            <img src="https://via.placeholder.com/150" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem;">
-                            <div>
-                                <button class="btn">Change Photo</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn-primary">Update Profile</button>
-                </div>
-                
-                <!-- Team Panel -->
-                <div id="teamPanel" class="panel-section" style="display: none;">
-                    <h3>My Team</h3>
-                    <div class="team-section">
-                        <h4>Direct Referrals (5)</h4>
-                        <div class="team-list">
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Alice Johnson</h4>
-                                <p>Referral: BH3M8N1P</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Robert Smith</h4>
-                                <p>Referral: BH5T9K2R</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Emma Wilson</h4>
-                                <p>Referral: BH7L4M8N</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Michael Brown</h4>
-                                <p>Referral: BH9P5Q6R</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Sarah Davis</h4>
-                                <p>Referral: BH2S7T8U</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="team-section">
-                        <h4>Team Network (19)</h4>
-                        <div class="team-list">
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>James Miller</h4>
-                                <p>Referral: BH4V9W1X</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Linda Garcia</h4>
-                                <p>Referral: BH6Y2Z3A</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>David Martinez</h4>
-                                <p>Referral: BH8B4C5D</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Jennifer Lee</h4>
-                                <p>Referral: BH1E6F7G</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>William Taylor</h4>
-                                <p>Referral: BH3H8I9J</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Income Panel -->
-                <div id="incomePanel" class="panel-section" style="display: none;">
-                    <h3>Income Overview</h3>
-                    <div class="dashboard-overview">
-                        <div class="dashboard-card">
-                            <h3>Trading Profit</h3>
-                            <p>$1,245.67</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Referral Bonus</h3>
-                            <p>$320.50</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Team Commission</h3>
-                            <p>$185.30</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Total Income</h3>
-                            <p>$1,751.47</p>
-                        </div>
-                    </div>
-                    
-                    <div class="market-overview">
-                        <h3>Income History</h3>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background-color: #f8f9fa;">
-                                    <th style="padding: 10px; text-align: left;">Date</th>
-                                    <th style="padding: 10px; text-align: left;">Source</th>
-                                    <th style="padding: 10px; text-align: left;">Description</th>
-                                    <th style="padding: 10px; text-align: left;">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-15</td>
-                                    <td style="padding: 10px;">Trading</td>
-                                    <td style="padding: 10px;">EUR/USD Profit</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$25.00</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-14</td>
-                                    <td style="padding: 10px;">Referral</td>
-                                    <td style="padding: 10px;">Bonus from Alice Johnson</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$10.00</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-13</td>
-                                    <td style="padding: 10px;">Team</td>
-                                    <td style="padding: 10px;">Commission from Robert Smith</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$5.50</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-12</td>
-                                    <td style="padding: 10px;">Trading</td>
-                                    <td style="padding: 10px;">GBP/USD Profit</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">+$16.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Withdrawal Panel -->
-                <div id="withdrawalPanel" class="panel-section" style="display: none;">
-                    <h3>Withdraw Funds</h3>
-                    <div class="form-group">
-                        <label for="withdrawalAmount">Amount ($)</label>
-                        <input type="number" id="withdrawalAmount" class="form-control" placeholder="Enter amount to withdraw">
-                    </div>
-                    <div class="form-group">
-                        <label for="withdrawalMethod">Withdrawal Method</label>
-                        <select id="withdrawalMethod" class="form-control">
-                            <option value="bank">Bank Transfer</option>
-                            <option value="crypto">Cryptocurrency</option>
-                            <option value="paypal">PayPal</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="withdrawalDetails">Withdrawal Details</label>
-                        <textarea id="withdrawalDetails" class="form-control" rows="4" placeholder="Enter your bank account details, crypto wallet address, or PayPal email"></textarea>
-                    </div>
-                    <button class="btn-primary">Submit Withdrawal Request</button>
-                    
-                    <div class="market-overview" style="margin-top: 2rem;">
-                        <h3>Withdrawal History</h3>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background-color: #f8f9fa;">
-                                    <th style="padding: 10px; text-align: left;">Date</th>
-                                    <th style="padding: 10px; text-align: left;">Amount</th>
-                                    <th style="padding: 10px; text-align: left;">Method</th>
-                                    <th style="padding: 10px; text-align: left;">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-10</td>
-                                    <td style="padding: 10px;">$500.00</td>
-                                    <td style="padding: 10px;">Bank Transfer</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Completed</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-05</td>
-                                    <td style="padding: 10px;">$300.00</td>
-                                    <td style="padding: 10px;">Cryptocurrency</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Completed</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-01</td>
-                                    <td style="padding: 10px;">$200.00</td>
-                                    <td style="padding: 10px;">PayPal</td>
-                                    <td style="padding: 10px; color: var(--warning-color);">Processing</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Deposit Panel -->
-                <div id="depositPanel" class="panel-section" style="display: none;">
-                    <h3>Deposit Funds</h3>
-                    <div class="form-group">
-                        <label for="depositAmount">Amount ($)</label>
-                        <input type="number" id="depositAmount" class="form-control" placeholder="Enter amount to deposit">
-                    </div>
-                    <div class="form-group">
-                        <label for="depositMethod">Deposit Method</label>
-                        <select id="depositMethod" class="form-control">
-                            <option value="bank">Bank Transfer</option>
-                            <option value="crypto">Cryptocurrency</option>
-                            <option value="card">Credit/Debit Card</option>
-                            <option value="paypal">PayPal</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="depositBonus">Select Bonus (Optional)</label>
-                        <select id="depositBonus" class="form-control">
-                            <option value="none">No Bonus</option>
-                            <option value="5">5% Bonus</option>
-                            <option value="10">10% Bonus</option>
-                            <option value="15">15% Bonus</option>
-                        </select>
-                    </div>
-                    <button class="btn-primary">Proceed to Deposit</button>
-                    
-                    <div class="market-overview" style="margin-top: 2rem;">
-                        <h3>Deposit History</h3>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background-color: #f8f9fa;">
-                                    <th style="padding: 10px; text-align: left;">Date</th>
-                                    <th style="padding: 10px; text-align: left;">Amount</th>
-                                    <th style="padding: 10px; text-align: left;">Method</th>
-                                    <th style="padding: 10px; text-align: left;">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-12</td>
-                                    <td style="padding: 10px;">$1,000.00</td>
-                                    <td style="padding: 10px;">Bank Transfer</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Completed</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-08</td>
-                                    <td style="padding: 10px;">$500.00</td>
-                                    <td style="padding: 10px;">Credit Card</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Completed</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">2023-06-01</td>
-                                    <td style="padding: 10px;">$250.00</td>
-                                    <td style="padding: 10px;">Cryptocurrency</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Completed</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Support Panel -->
-                <div id="supportPanel" class="panel-section" style="display: none;">
-                    <h3>Support Center</h3>
-                    <div class="form-group">
-                        <label for="supportSubject">Subject</label>
-                        <input type="text" id="supportSubject" class="form-control" placeholder="Enter subject">
-                    </div>
-                    <div class="form-group">
-                        <label for="supportMessage">Message</label>
-                        <textarea id="supportMessage" class="form-control" rows="6" placeholder="Describe your issue or question"></textarea>
-                    </div>
-                    <button class="btn-primary">Submit Ticket</button>
-                    
-                    <div class="market-overview" style="margin-top: 2rem;">
-                        <h3>Your Support Tickets</h3>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background-color: #f8f9fa;">
-                                    <th style="padding: 10px; text-align: left;">ID</th>
-                                    <th style="padding: 10px; text-align: left;">Subject</th>
-                                    <th style="padding: 10px; text-align: left;">Date</th>
-                                    <th style="padding: 10px; text-align: left;">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 10px;">#1024</td>
-                                    <td style="padding: 10px;">Withdrawal Issue</td>
-                                    <td style="padding: 10px;">2023-06-10</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Resolved</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">#1023</td>
-                                    <td style="padding: 10px;">Account Verification</td>
-                                    <td style="padding: 10px;">2023-06-05</td>
-                                    <td style="padding: 10px; color: var(--secondary-color);">Resolved</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 10px;">#1022</td>
-                                    <td style="padding: 10px;">Trading Platform Question</td>
-                                    <td style="padding: 10px;">2023-06-01</td>
-                                    <td style="padding: 10px; color: var(--warning-color);">In Progress</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>BitHorizon.io</h3>
-                <p>Your trusted partner in forex trading. We provide the tools and resources you need to succeed in the global currency markets.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="logo">
+                        <a href="/">
+                            <img src="https://i.imgur.com/9k0WQYt.png" alt="BitHorizon Forex Trading Logo">
+                            <span>BitHorizon.io</span>
+                        </a>
+                    </div>
+                    <p>Your trusted partner in forex trading. We provide the tools and resources you need to succeed in the global currency markets.</p>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/platform">Trading Platform</a></li>
+                        <li><a href="/education">Education</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/risk">Risk Disclosure</a></li>
+                        <li><a href="/aml">AML Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:support@bithorizon.io">support@bithorizon.io</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+15551234567">+1 (555) 123-4567</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Financial St, New York, NY</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Trading Platform</a></li>
-                    <li><a href="#">Education</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> BitHorizon.io. All rights reserved.</p>
             </div>
-            <div class="footer-column">
-                <h3>Legal</h3>
-                <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Risk Disclosure</a></li>
-                    <li><a href="#">AML Policy</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Contact Us</h3>
-                <ul>
-                    <li><i class="fas fa-envelope"></i> support@bithorizon.io</li>
-                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Financial St, New York, NY</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 BitHorizon.io. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Email Verification Modal -->
-    <div id="emailVerificationModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Verify Your Email</h2>
-            
-            <div class="demo-notice">
-                <h4><i class="fas fa-info-circle"></i> Verification Email Sent</h4>
-                <p>We've sent a verification email to your registered email address. Please check your inbox and click on the verification link to complete your registration.</p>
-            </div>
-            
-            <p>Didn't receive the email? Check your spam folder or click the button below to resend.</p>
-            <form id="emailVerificationForm">
-                <button type="button" class="btn-primary" id="resendVerification">Resend Verification Email</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div id="forgotPasswordModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Reset Password</h2>
-            <p>Enter your email address and we'll send you an OTP to reset your password.</p>
-            <form id="forgotPasswordForm">
-                <div class="form-group">
-                    <label for="resetEmail">Email Address</label>
-                    <input type="email" id="resetEmail" class="form-control" placeholder="Enter your email" required>
-                </div>
-                <button type="submit" class="btn-primary">Send OTP</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- OTP Verification Modal -->
-    <div id="otpModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Verify OTP</h2>
-            
-            <div class="demo-notice">
-                <h4><i class="fas fa-info-circle"></i> Demo Mode</h4>
-                <p>For testing purposes, use OTP: <strong>123456</strong></p>
-            </div>
-            
-            <p>We've sent a 6-digit OTP to your email. Please enter it below.</p>
-            <div class="otp-input">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-                <input type="text" maxlength="1" class="otp-digit">
-            </div>
-            <form id="otpForm">
-                <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" required>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password" required>
-                </div>
-                <button type="submit" class="btn-primary">Reset Password</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
-
     <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyD9SYoIYxj0d3shvER4hqGiDugfIwuCluI",
-            authDomain: "bithorizon-d3fac.firebaseapp.com",
-            projectId: "bithorizon-d3fac",
-            storageBucket: "bithorizon-d3fac.appspot.com",
-            messagingSenderId: "400494505534",
-            appId: "1:400494505534:web:abc123def456"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // DOM Elements
-        const logoContainer = document.getElementById('logoContainer');
-        const homeSection = document.getElementById('homeSection');
-        const registerSection = document.getElementById('registerSection');
-        const loginSection = document.getElementById('loginSection');
-        const userPanel = document.getElementById('userPanel');
-        const registerForm = document.getElementById('registerForm');
-        const loginForm = document.getElementById('loginForm');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const showLoginFromReg = document.getElementById('showLoginFromReg');
-        const showRegisterFromLogin = document.getElementById('showRegisterFromLogin');
-        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
-        const emailVerificationModal = document.getElementById('emailVerificationModal');
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-        const otpModal = document.getElementById('otpModal');
-        const closeModalButtons = document.querySelectorAll('.close-modal');
-        const emailVerificationForm = document.getElementById('emailVerificationForm');
-        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-        const otpForm = document.getElementById('otpForm');
-        const panelMenuItems = document.querySelectorAll('.panel-menu-item');
-        const panelSections = document.querySelectorAll('.panel-section');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const notification = document.getElementById('notification');
-        const resendVerification = document.getElementById('resendVerification');
-        const otpDigits = document.querySelectorAll('.otp-digit');
-
-        // Temporary storage for registration data
-        let tempRegistrationData = {};
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.style.backgroundColor = type === 'success' ? 'var(--secondary-color)' : 'var(--danger-color)';
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-
-        // Logo click - go to home
-        logoContainer.addEventListener('click', () => {
-            homeSection.style.display = 'block';
-            registerSection.style.display = 'none';
-            loginSection.style.display = 'none';
-            userPanel.style.display = 'none';
-            window.scrollTo(0, 0);
-        });
-
-        showLoginFromReg.addEventListener('click', (e) => {
-            e.preventDefault();
-            homeSection.style.display = 'none';
-            registerSection.style.display = 'none';
-            loginSection.style.display = 'block';
-            userPanel.style.display = 'none';
-        });
-
-        showRegisterFromLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            homeSection.style.display = 'none';
-            registerSection.style.display = 'block';
-            loginSection.style.display = 'none';
-            userPanel.style.display = 'none';
-        });
-
-        // Registration Form with Firebase
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                showNotification('Passwords do not match!', 'error');
-                return;
-            }
-            
-            // Store registration data temporarily
-            tempRegistrationData = {
-                fullName,
-                email,
-                password
-            };
-            
-            // Create user with Firebase
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Send verification email
-                    return userCredential.user.sendEmailVerification();
-                })
-                .then(() => {
-                    // Show email verification modal
-                    registerSection.style.display = 'none';
-                    emailVerificationModal.style.display = 'flex';
-                    
-                    showNotification('Registration successful! Please verify your email.');
-                })
-                .catch((error) => {
-                    showNotification(error.message, 'error');
-                });
-        });
-
-        // Resend Verification Email
-        resendVerification.addEventListener('click', () => {
-            const user = auth.currentUser;
-            
-            if (user) {
-                user.sendEmailVerification()
-                    .then(() => {
-                        showNotification('Verification email resent successfully!');
-                    })
-                    .catch((error) => {
-                        showNotification(error.message, 'error');
-                    });
-            }
-        });
-
-        // Login Form with Firebase
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    
-                    // Check if email is verified
-                    if (user.emailVerified) {
-                        // Generate random referral code
-                        const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
-                        
-                        // Store user data (in a real app, this would be saved to a database)
-                        const userData = {
-                            fullName: tempRegistrationData.fullName || user.displayName || 'User',
-                            email: user.email,
-                            referralCode,
-                            uid: user.uid
-                        };
-                        
-                        // Save to localStorage for demo purposes
-                        localStorage.setItem('bithorizon_user', JSON.stringify(userData));
-                        
-                        // Show user panel
-                        homeSection.style.display = 'none';
-                        registerSection.style.display = 'none';
-                        loginSection.style.display = 'none';
-                        userPanel.style.display = 'block';
-                        
-                        // Set user name and referral code
-                        document.getElementById('userName').textContent = userData.fullName;
-                        document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
-                        
-                        showNotification('Login successful! Welcome to BitHorizon.io');
-                    } else {
-                        // Email not verified
-                        auth.signOut();
-                        showNotification('Please verify your email before logging in.', 'error');
-                    }
-                })
-                .catch((error) => {
-                    showNotification(error.message, 'error');
-                });
-        });
-
-        // Google Login with Firebase
-        googleLoginBtn.addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    
-                    // Generate random referral code
-                    const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
-                    
-                    // Store user data
-                    const userData = {
-                        fullName: user.displayName,
-                        email: user.email,
-                        referralCode,
-                        uid: user.uid
-                    };
-                    
-                    localStorage.setItem('bithorizon_user', JSON.stringify(userData));
-                    
-                    // Show user panel
-                    homeSection.style.display = 'none';
-                    registerSection.style.display = 'none';
-                    loginSection.style.display = 'none';
-                    userPanel.style.display = 'block';
-                    
-                    // Set user name and referral code
-                    document.getElementById('userName').textContent = userData.fullName;
-                    document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
-                    
-                    showNotification('Google login successful! Welcome to BitHorizon.io');
-                })
-                .catch((error) => {
-                    showNotification(error.message, 'error');
-                });
-        });
-
-        // Forgot Password
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotPasswordModal.style.display = 'flex';
-        });
-
-        // Forgot Password Form
-        forgotPasswordForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('resetEmail').value;
-            
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    forgotPasswordModal.style.display = 'none';
-                    showNotification('Password reset email sent successfully!');
-                })
-                .catch((error) => {
-                    showNotification(error.message, 'error');
-                });
-        });
-
-        // OTP Input Handling
-        otpDigits.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1) {
-                    if (index < otpDigits.length - 1) {
-                        otpDigits[index + 1].focus();
-                    }
-                }
-            });
-            
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
-                    otpDigits[index - 1].focus();
-                }
-            });
-        });
-
-        // OTP Form
-        otpForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Get OTP from input fields
-            let otp = '';
-            const otpInputs = otpModal.querySelectorAll('.otp-digit');
-            otpInputs.forEach(input => {
-                otp += input.value;
-            });
-            
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (otp.length !== 6) {
-                showNotification('Please enter a valid 6-digit OTP', 'error');
-                return;
-            }
-            
-            if (newPassword && confirmPassword) {
-                if (newPassword === confirmPassword) {
-                    // Simulate OTP verification (123456 is the demo OTP)
-                    if (otp === '123456') {
-                        otpModal.style.display = 'none';
-                        showNotification('Password reset successful!');
-                        
-                        // In a real app, you would update the user's password in Firebase here
-                    } else {
-                        showNotification('Invalid OTP. Please use 123456 for demo.', 'error');
-                    }
-                } else {
-                    showNotification('Passwords do not match!', 'error');
-                }
-            }
-        });
-
-        // Close Modals
-        closeModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                emailVerificationModal.style.display = 'none';
-                forgotPasswordModal.style.display = 'none';
-                otpModal.style.display = 'none';
-            });
-        });
-
-        // Panel Navigation
-        panelMenuItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Remove active class from all menu items
-                panelMenuItems.forEach(i => i.classList.remove('active'));
-                
-                // Add active class to clicked item
-                item.classList.add('active');
-                
-                // Hide all panel sections
-                panelSections.forEach(section => {
-                    section.style.display = 'none';
-                });
-                
-                // Show selected panel section
-                const panelId = item.getAttribute('data-panel') + 'Panel';
-                const selectedPanel = document.getElementById(panelId);
-                if (selectedPanel) {
-                    selectedPanel.style.display = 'block';
-                }
-            });
-        });
-
-        // Logout
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            auth.signOut()
-                .then(() => {
-                    // Show home section
-                    userPanel.style.display = 'none';
-                    homeSection.style.display = 'block';
-                    
-                    showNotification('You have been logged out successfully');
-                })
-                .catch((error) => {
-                    showNotification(error.message, 'error');
-                });
-        });
-
-        // Check if user is already logged in
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                if (user.emailVerified) {
-                    // Get user data from localStorage
-                    const userDataJSON = localStorage.getItem('bithorizon_user');
-                    
-                    if (userDataJSON) {
-                        const userData = JSON.parse(userDataJSON);
-                        
-                        // Show user panel
-                        homeSection.style.display = 'none';
-                        registerSection.style.display = 'none';
-                        loginSection.style.display = 'none';
-                        userPanel.style.display = 'block';
-                        
-                        // Set user name and referral code
-                        document.getElementById('userName').textContent = userData.fullName;
-                        document.getElementById('userReferral').textContent = 'Referral: ' + userData.referralCode;
-                    }
-                } else {
-                    // Email not verified
-                    auth.signOut();
-                }
-            }
-        });
+        // Dynamically update the copyright year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
