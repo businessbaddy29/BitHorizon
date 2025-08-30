@@ -190,6 +190,22 @@
             transform: translateY(-3px);
         }
         
+        .btn-secondary {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .btn-secondary:hover {
+            text-decoration: underline;
+        }
+        
         .divider {
             text-align: center;
             margin: 1.5rem 0;
@@ -395,12 +411,38 @@
             <div class="auth-image">
                 <h2>Welcome to BitHorizon</h2>
                 <p>Your trusted partner in forex trading. Join thousands of traders worldwide.</p>
-                
             </div>
             
             <div class="auth-forms">
+                <!-- Login Section -->
+                <section id="loginSection" class="auth-section active">
+                    <h2>Login to Your Account</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                            <div id="emailError" class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                            <div id="passwordError" class="error-message"></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Login</button>
+                        <button type="button" id="forgotPasswordBtn" class="btn-secondary">Forgot Password?</button>
+                        <div id="loginError" class="login-error"></div>
+                    </form>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    
+                    <div class="auth-toggle">
+                        Don't have an account? <a href="#" id="showRegisterFromLogin">Register</a>
+                    </div>
+                </section>
+                
                 <!-- Registration Section -->
-                <section id="registerSection" class="auth-section active">
+                <section id="registerSection" class="auth-section">
                     <h2>Create Your Account</h2>
                     <form id="registerForm">
                         <div class="form-group">
@@ -430,29 +472,21 @@
                         Already have an account? <a href="#" id="showLoginFromReg">Login</a>
                     </div>
                 </section>
-                <!-- Login Section -->
-                <section id="loginSection" class="auth-section">
-                    <h2>Login to Your Account</h2>
-                    <form id="loginForm">
+                
+                <!-- Forgot Password Section -->
+                <section id="forgotPasswordSection" class="auth-section">
+                    <h2>Reset Password</h2>
+                    <form id="forgotPasswordForm">
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
-                            <div id="emailError" class="error-message"></div>
+                            <label for="resetEmail">Email Address</label>
+                            <input type="email" id="resetEmail" class="form-control" placeholder="Enter your email" required>
+                            <div id="resetEmailError" class="error-message"></div>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
-                            <div id="passwordError" class="error-message"></div>
-                        </div>
-                        <button type="submit" class="btn-primary">Login</button>
-                        <div id="loginError" class="login-error"></div>
+                        <button type="submit" class="btn-primary">Send Reset Link</button>
+                        <div id="resetSuccess" class="success-message"></div>
                     </form>
-                    <div class="divider">
-                        <span>OR</span>
-                    </div>
-                    
                     <div class="auth-toggle">
-                        Don't have an account? <a href="#" id="showRegisterFromLogin">Register</a>
+                        Remember your password? <a href="#" id="showLoginFromReset">Back to Login</a>
                     </div>
                 </section>
             </div>
@@ -522,13 +556,17 @@
         
         // DOM Elements
         const logoContainer = document.getElementById('logoContainer');
-        const registerSection = document.getElementById('registerSection');
         const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+        const forgotPasswordSection = document.getElementById('forgotPasswordSection');
         const registerForm = document.getElementById('registerForm');
         const loginForm = document.getElementById('loginForm');
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
         const googleLoginBtn = document.getElementById('googleLoginBtn');
         const showLoginFromReg = document.getElementById('showLoginFromReg');
         const showRegisterFromLogin = document.getElementById('showRegisterFromLogin');
+        const showLoginFromReset = document.getElementById('showLoginFromReset');
+        const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
         const notification = document.getElementById('notification');
         
         // Error elements
@@ -540,6 +578,8 @@
         const passwordError = document.getElementById('passwordError');
         const loginError = document.getElementById('loginError');
         const registerSuccess = document.getElementById('registerSuccess');
+        const resetEmailError = document.getElementById('resetEmailError');
+        const resetSuccess = document.getElementById('resetSuccess');
         
         // Show notification
         function showNotification(message, type = 'success') {
@@ -570,6 +610,10 @@
             loginError.style.display = 'none';
             registerSuccess.textContent = '';
             registerSuccess.style.display = 'none';
+            resetEmailError.textContent = '';
+            resetEmailError.style.display = 'none';
+            resetSuccess.textContent = '';
+            resetSuccess.style.display = 'none';
         }
         
         // Logo click - redirect to home
@@ -590,6 +634,22 @@
             e.preventDefault();
             loginSection.classList.remove('active');
             registerSection.classList.add('active');
+            clearErrors();
+        });
+        
+        // Show forgot password from login
+        forgotPasswordBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginSection.classList.remove('active');
+            forgotPasswordSection.classList.add('active');
+            clearErrors();
+        });
+        
+        // Show login from forgot password
+        showLoginFromReset.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordSection.classList.remove('active');
+            loginSection.classList.add('active');
             clearErrors();
         });
         
@@ -732,6 +792,50 @@
                         // Generic error
                         emailError.textContent = errorMessage;
                         emailError.style.display = 'block';
+                    }
+                });
+        });
+        
+        // Forgot Password Form with Firebase
+        forgotPasswordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearErrors();
+            
+            const email = document.getElementById('resetEmail').value;
+            
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    // Show success message
+                    resetSuccess.textContent = 'Password reset email sent! Please check your inbox.';
+                    resetSuccess.style.display = 'block';
+                    
+                    // Clear form
+                    forgotPasswordForm.reset();
+                    
+                    // Show notification
+                    showNotification('Password reset email sent successfully!');
+                    
+                    // Switch to login form after a delay
+                    setTimeout(() => {
+                        forgotPasswordSection.classList.remove('active');
+                        loginSection.classList.add('active');
+                        clearErrors();
+                    }, 3000);
+                })
+                .catch((error) => {
+                    let errorMessage = error.message;
+                    
+                    // Handle specific Firebase errors
+                    if (error.code === 'auth/invalid-email') {
+                        resetEmailError.textContent = 'Please enter a valid email address.';
+                        resetEmailError.style.display = 'block';
+                    } else if (error.code === 'auth/user-not-found') {
+                        resetEmailError.textContent = 'No account found with this email. Please register first.';
+                        resetEmailError.style.display = 'block';
+                    } else {
+                        // Generic error
+                        resetEmailError.textContent = errorMessage;
+                        resetEmailError.style.display = 'block';
                     }
                 });
         });
