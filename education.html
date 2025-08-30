@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitHorizon.io - Education</title>
+    <meta name="description" content="Enhance your forex trading skills with BitHorizon's comprehensive education resources. Access courses, webinars, and trading guides.">
+    <meta name="keywords" content="forex education, trading courses, forex tutorials, trading webinars, learn forex trading">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00008B;
+            --accent-color: #0066cc;
+            --text-color: #333;
+            --light-text: #555;
+            --background-light: #f0f8ff;
+            --white: #ffffff;
+            --footer-text: #ccc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--white);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo a:hover {
+            color: var(--accent-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 102, 204, 0.8), rgba(0, 102, 204, 0.9)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--white);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary-color);
+            padding: 15px 35px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s, transform 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        
+        /* Education Overview Section */
+        .education-overview {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .education-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .education-text {
+            padding-right: 20px;
+        }
+        
+        .education-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .education-text p {
+            margin-bottom: 20px;
+            color: var(--light-text);
+        }
+        
+        .education-image {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
+        }
+        
+        .education-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Courses Section */
+        .courses-section {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .course-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.2);
+        }
+        
+        .course-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .course-card:hover .course-image img {
+            transform: scale(1.05);
+        }
+        
+        .course-content {
+            padding: 25px;
+        }
+        
+        .course-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .course-content p {
+            color: var(--light-text);
+            margin-bottom: 15px;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .course-level {
+            background-color: var(--background-light);
+            color: var(--accent-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .course-duration {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+        
+        .course-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .course-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        /* Resources Section */
+        .resources-section {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .resource-card {
+            background-color: var(--background-light);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .resource-card i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .resource-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .resource-card p {
+            color: var(--light-text);
+            margin-bottom: 20px;
+        }
+        
+        .resource-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .resource-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        /* Webinars Section */
+        .webinars-section {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+        
+        .webinars-list {
+            margin-top: 50px;
+        }
+        
+        .webinar-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .webinar-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .webinar-date {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-right: 25px;
+            min-width: 80px;
+        }
+        
+        .webinar-date .day {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .webinar-date .month {
+            font-size: 0.9rem;
+        }
+        
+        .webinar-info {
+            flex: 1;
+        }
+        
+        .webinar-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .webinar-info p {
+            color: var(--light-text);
+            margin-bottom: 10px;
+        }
+        
+        .webinar-info .webinar-time {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .webinar-btn {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .webinar-btn:hover {
+            background-color: var(--primary-color);
+        }
+        
+        /* Trading Guides Section */
+        .guides-section {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .guide-card {
+            background-color: var(--background-light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .guide-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .guide-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .guide-content {
+            padding: 25px;
+        }
+        
+        .guide-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .guide-content p {
+            color: var(--light-text);
+            margin-bottom: 15px;
+        }
+        
+        .guide-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        .guide-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .guide-link i {
+            margin-left: 5px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background-color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--white);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            padding: 70px 0 20px;
+            border-top: 2px solid var(--accent-color);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--white);
+            position: relative;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--white);
+        }
+        
+        .footer-column p {
+            margin-bottom: 20px;
+            color: var(--footer-text);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .contact-info {
+            list-style: none;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info li i {
+            color: var(--white);
+            margin-right: 10px;
+            margin-top: 5px;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        
+        .contact-info li a,
+        .contact-info li span {
+            color: var(--white);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--white);
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .education-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .courses-grid,
+            .resources-grid,
+            .guides-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .webinar-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .webinar-date {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.png" alt="BitHorizon Logo">
+                    <span>BitHorizon.io</span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="platform.html">Trading Platform</a></li>
+                    <li><a href="education.html" class="active">Education</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Forex Trading Education</h1>
+                <p>Master the markets with our comprehensive educational resources designed for traders of all levels</p>
+                <a href="#courses" class="btn">Explore Courses</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Overview Section -->
+    <section class="education-overview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Empowering Traders Through Education</h2>
+                <p>At BitHorizon, we believe that knowledge is the key to successful trading. Our education center is designed to provide you with the skills and insights needed to navigate the forex market with confidence.</p>
+            </div>
+            
+            <div class="education-content">
+                <div class="education-text">
+                    <h3>Why Education Matters</h3>
+                    <p>The forex market is complex and constantly evolving. Without proper education, traders are more likely to make costly mistakes. Our comprehensive educational resources are designed to bridge the knowledge gap and empower you to make informed trading decisions.</p>
+                    <p>Whether you're a complete beginner or an experienced trader looking to refine your strategies, our education center offers something for everyone. From basic concepts to advanced trading techniques, we cover it all.</p>
+                    <p>Our team of market experts and seasoned traders have carefully curated content that is both practical and applicable in real-world trading scenarios.</p>
+                </div>
+                <div class="education-image">
+                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Forex Education">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses-section" id="courses">
+        <div class="container">
+            <div class="section-title">
+                <h2>Trading Courses</h2>
+                <p>Structured learning paths designed to take your trading skills to the next level</p>
+            </div>
+            
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Beginner Course">
+                    </div>
+                    <div class="course-content">
+                        <h3>Forex Trading Basics</h3>
+                        <p>Learn the fundamentals of forex trading, including market terminology, trading hours, and basic analysis techniques.</p>
+                        <div class="course-meta">
+                            <span class="course-level">Beginner</span>
+                            <span class="course-duration">4 weeks</span>
+                        </div>
+                        <button class="course-btn">Enroll Now</button>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Technical Analysis">
+                    </div>
+                    <div class="course-content">
+                        <h3>Technical Analysis Mastery</h3>
+                        <p>Master the art of reading charts, identifying patterns, and using technical indicators to make informed trading decisions.</p>
+                        <div class="course-meta">
+                            <span class="course-level">Intermediate</span>
+                            <span class="course-duration">6 weeks</span>
+                        </div>
+                        <button class="course-btn">Enroll Now</button>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1590283603382-09c94a56561e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Advanced Strategies">
+                    </div>
+                    <div class="course-content">
+                        <h3>Advanced Trading Strategies</h3>
+                        <p>Develop sophisticated trading strategies, risk management techniques, and psychological discipline for consistent profits.</p>
+                        <div class="course-meta">
+                            <span class="course-level">Advanced</span>
+                            <span class="course-duration">8 weeks</span>
+                        </div>
+                        <button class="course-btn">Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Educational Resources</h2>
+                <p>Free resources to enhance your trading knowledge and skills</p>
+            </div>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <i class="fas fa-book"></i>
+                    <h3>Trading Guides</h3>
+                    <p>Comprehensive guides covering various aspects of forex trading, from basics to advanced concepts.</p>
+                    <a href="#" class="resource-btn">View Guides</a>
+                </div>
+                
+                <div class="resource-card">
+                    <i class="fas fa-video"></i>
+                    <h3>Video Tutorials</h3>
+                    <p>Step-by-step video tutorials demonstrating trading techniques and platform features.</p>
+                    <a href="#" class="resource-btn">Watch Videos</a>
+                </div>
+                
+                <div class="resource-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Market Analysis</h3>
+                    <p>Daily and weekly market analysis from our team of expert analysts to keep you informed.</p>
+                    <a href="#" class="resource-btn">Read Analysis</a>
+                </div>
+                
+                <div class="resource-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>E-Books</h3>
+                    <p>Downloadable e-books covering in-depth trading strategies and market insights.</p>
+                    <a href="#" class="resource-btn">Download E-Books</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Webinars Section -->
+    <section class="webinars-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Upcoming Webinars</h2>
+                <p>Join our live webinars to learn from industry experts and interact with fellow traders</p>
+            </div>
+            
+            <div class="webinars-list">
+                <div class="webinar-item">
+                    <div class="webinar-date">
+                        <div class="day">15</div>
+                        <div class="month">JUN</div>
+                    </div>
+                    <div class="webinar-info">
+                        <h3>Introduction to Forex Trading</h3>
+                        <p>Perfect for beginners looking to understand the basics of forex trading and how to get started.</p>
+                        <div class="webinar-time">4:00 PM GMT</div>
+                    </div>
+                    <button class="webinar-btn">Register</button>
+                </div>
+                
+                <div class="webinar-item">
+                    <div class="webinar-date">
+                        <div class="day">22</div>
+                        <div class="month">JUN</div>
+                    </div>
+                    <div class="webinar-info">
+                        <h3>Technical Analysis Deep Dive</h3>
+                        <p>Explore advanced technical analysis techniques and how to apply them in real trading scenarios.</p>
+                        <div class="webinar-time">4:00 PM GMT</div>
+                    </div>
+                    <button class="webinar-btn">Register</button>
+                </div>
+                
+                <div class="webinar-item">
+                    <div class="webinar-date">
+                        <div class="day">29</div>
+                        <div class="month">JUN</div>
+                    </div>
+                    <div class="webinar-info">
+                        <h3>Risk Management Strategies</h3>
+                        <p>Learn essential risk management techniques to protect your capital and maximize profits.</p>
+                        <div class="webinar-time">4:00 PM GMT</div>
+                    </div>
+                    <button class="webinar-btn">Register</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Guides Section -->
+    <section class="guides-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Popular Trading Guides</h2>
+                <p>In-depth guides to help you master specific aspects of forex trading</p>
+            </div>
+            
+            <div class="guides-grid">
+                <div class="guide-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Candlestick Patterns">
+                    <div class="guide-content">
+                        <h3>Understanding Candlestick Patterns</h3>
+                        <p>A comprehensive guide to reading and interpreting candlestick patterns for better trading decisions.</p>
+                        <a href="#" class="guide-link">Read Guide <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Support and Resistance">
+                    <div class="guide-content">
+                        <h3>Support and Resistance Levels</h3>
+                        <p>Learn how to identify and use support and resistance levels to improve your trading strategy.</p>
+                        <a href="#" class="guide-link">Read Guide <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="guide-card">
+                    <img src="https://images.unsplash.com/photo-1590283603382-09c94a56561e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Risk Management">
+                    <div class="guide-content">
+                        <h3>Effective Risk Management</h3>
+                        <p>Discover proven risk management techniques to protect your trading capital and minimize losses.</p>
+                        <a href="#" class="guide-link">Read Guide <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Enhance Your Trading Skills?</h2>
+                <p>Join thousands of traders who have improved their performance with our educational resources</p>
+                <a href="login.html" class="btn">Start Learning Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="logo.png" alt="BitHorizon Logo">
+                            <span>BitHorizon.io</span>
+                        </a>
+                    </div>
+                    <p>Your trusted partner in forex trading. We provide the tools and resources you need to succeed in the global currency markets.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="platform.html">Trading Platform</a></li>
+                        <li><a href="education.html">Education</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/risk">Risk Disclosure</a></li>
+                        <li><a href="/aml">AML Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:support@bithorizon.io">support@bithorizon.io</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+15551234567">+1 (555) 123-4567</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Financial St, New York, NY</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> BitHorizon.io. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dynamically update the copyright year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
