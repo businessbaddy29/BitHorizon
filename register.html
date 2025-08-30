@@ -10,12 +10,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <style>
         :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #34a853;
-            --dark-color: #202124;
-            --light-color: #f8f9fa;
-            --danger-color: #ea4335;
-            --warning-color: #fbbc05;
+            --primary-color: #00008B;
+            --accent-color: #0066cc;
+            --text-color: #333;
+            --light-text: #555;
+            --background-light: #f0f8ff;
+            --white: #ffffff;
+            --footer-text: #ccc;
         }
         
         * {
@@ -26,8 +27,8 @@
         }
         
         body {
-            background-color: #f5f7fa;
-            color: var(--dark-color);
+            background-color: var(--white);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -35,20 +36,24 @@
         
         /* Header Styles */
         header {
-            background-color: var(--dark-color);
+            background-color: var(--primary-color);
             color: white;
-            padding: 1rem 5%;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--accent-color);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
         .logo-container {
@@ -59,12 +64,8 @@
         }
         
         .logo {
-            width: 50px;
             height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-            transition: transform 0.3s;
+            margin-right: 15px;
         }
         
         .logo:hover {
@@ -72,9 +73,9 @@
         }
         
         .company-name {
-            font-size: 1.8rem;
+            font-size: 24px;
             font-weight: bold;
-            color: var(--primary-color);
+            color: var(--white);
         }
         
         /* Main Content */
@@ -85,13 +86,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: var(--background-light);
         }
         
         .auth-container {
             display: flex;
             max-width: 1000px;
             width: 100%;
-            background-color: white;
+            background-color: var(--white);
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             overflow: hidden;
@@ -99,7 +101,7 @@
         
         .auth-image {
             flex: 1;
-            background: linear-gradient(135deg, #1a73e8, #34a853);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -142,7 +144,7 @@
         .auth-section h2 {
             font-size: 2rem;
             margin-bottom: 1.5rem;
-            color: var(--dark-color);
+            color: var(--primary-color);
         }
         
         .form-group {
@@ -153,6 +155,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
+            color: var(--text-color);
         }
         
         .form-control {
@@ -164,26 +167,27 @@
         }
         
         .form-control:focus {
-            border-color: var(--primary-color);
+            border-color: var(--accent-color);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
         }
         
         .btn-primary {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             background-color: var(--primary-color);
-            color: white;
+            color: var(--white);
             border: none;
             border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
         
         .btn-primary:hover {
-            background-color: #0d62d9;
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
         }
         
         .divider {
@@ -203,7 +207,7 @@
         }
         
         .divider span {
-            background-color: white;
+            background-color: var(--white);
             padding: 0 1rem;
             position: relative;
         }
@@ -215,8 +219,8 @@
             gap: 10px;
             width: 100%;
             padding: 12px;
-            background-color: white;
-            color: var(--dark-color);
+            background-color: var(--white);
+            color: var(--text-color);
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
@@ -235,28 +239,28 @@
         }
         
         .auth-toggle a {
-            color: var(--primary-color);
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: 500;
         }
         
         /* Error and Success Messages */
         .error-message {
-            color: var(--danger-color);
+            color: #ea4335;
             font-size: 0.9rem;
             margin-top: 0.5rem;
             display: none;
         }
         
         .success-message {
-            color: var(--secondary-color);
+            color: #34a853;
             font-size: 0.9rem;
             margin-top: 0.5rem;
             display: none;
         }
         
         .login-error {
-            color: var(--danger-color);
+            color: #ea4335;
             font-weight: bold;
             margin-top: 10px;
             display: none;
@@ -268,23 +272,43 @@
         
         /* Footer */
         footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 2rem 5%;
-            text-align: center;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 70px 0 20px;
+            border-top: 2px solid var(--accent-color);
         }
         
         .footer-content {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
         }
         
         .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--white);
+            position: relative;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--white);
+        }
+        
+        .footer-column p {
+            margin-bottom: 20px;
+            color: var(--footer-text);
         }
         
         .footer-column ul {
@@ -292,24 +316,29 @@
         }
         
         .footer-column ul li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 12px;
         }
         
-        .footer-column a {
-            color: #e0e0e0;
+        .footer-column ul li a {
+            color: var(--white);
             text-decoration: none;
             transition: color 0.3s;
         }
         
-        .footer-column a:hover {
-            color: var(--primary-color);
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
         }
         
         .footer-bottom {
-            padding-top: 1rem;
-            border-top: 1px solid #444;
-            color: #aaa;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--white);
+            color: var(--white);
             font-size: 0.9rem;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
         
         /* Notification */
@@ -317,7 +346,7 @@
             position: fixed;
             top: 100px;
             right: 20px;
-            background-color: var(--secondary-color);
+            background-color: #34a853;
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 5px;
@@ -343,6 +372,10 @@
             .auth-image p {
                 font-size: 1rem;
             }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -356,14 +389,13 @@
             </div>
         </div>
     </header>
-
     <!-- Main Content -->
     <main>
         <div class="auth-container">
             <div class="auth-image">
                 <h2>Welcome to BitHorizon</h2>
                 <p>Your trusted partner in forex trading. Join thousands of traders worldwide.</p>
-                <img src="https://via.placeholder.com/400x300" alt="Forex Trading">
+                
             </div>
             
             <div class="auth-forms">
@@ -398,7 +430,6 @@
                         Already have an account? <a href="#" id="showLoginFromReg">Login</a>
                     </div>
                 </section>
-
                 <!-- Login Section -->
                 <section id="loginSection" class="auth-section">
                     <h2>Login to Your Account</h2>
@@ -427,45 +458,54 @@
             </div>
         </div>
     </main>
-
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-column">
+                <div class="logo-container">
+                    <img src="logo.png" alt="BitHorizon Logo" class="logo">
+                    <span class="company-name">BitHorizon.io</span>
+                </div>
+                <p>Your trusted partner in forex trading. We provide the tools and resources you need to succeed in the global currency markets.</p>
+            </div>
+            <div class="footer-column">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Trading Platform</a></li>
-                    <li><a href="#">Education</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/platform">Trading Platform</a></li>
+                    <li><a href="/education">Education</a></li>
+                    <li><a href="/contact">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Legal</h3>
                 <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Risk Disclosure</a></li>
-                    <li><a href="#">AML Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/risk">Risk Disclosure</a></li>
+                    <li><a href="/aml">AML Policy</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Contact Us</h3>
                 <ul>
-                    <li><i class="fas fa-envelope"></i> support@bithorizon.io</li>
-                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:support@bithorizon.io">support@bithorizon.io</a></li>
+                    <li><i class="fas fa-phone"></i> <a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Financial St, New York, NY</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 BitHorizon.io. All rights reserved.</p>
+            <p>&copy; <span id="current-year"></span> BitHorizon.io. All rights reserved.</p>
         </div>
     </footer>
-
     <!-- Notification -->
     <div id="notification" class="notification"></div>
-
     <script>
+        // Dynamically update the copyright year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
         // Initialize Firebase with your configuration
         const firebaseConfig = {
             apiKey: "AIzaSyD9SYoIYxj0d3shvER4hqGiDugfIwuCluI",
@@ -504,7 +544,7 @@
         // Show notification
         function showNotification(message, type = 'success') {
             notification.textContent = message;
-            notification.style.backgroundColor = type === 'success' ? 'var(--secondary-color)' : 'var(--danger-color)';
+            notification.style.backgroundColor = type === 'success' ? 'var(--primary-color)' : 'var(--accent-color)';
             notification.style.display = 'block';
             
             setTimeout(() => {
