@@ -20,6 +20,11 @@
             --success-color: #34a853;
             --danger-color: #ea4335;
             --warning-color: #fbbc05;
+            --info-color: #4285f4;
+            --purple-color: #9c27b0;
+            --orange-color: #ff9800;
+            --teal-color: #009688;
+            --pink-color: #e91e63;
         }
         
         * {
@@ -32,28 +37,22 @@
         body {
             background-color: var(--white);
             color: var(--text-color);
+            margin: 0;
+            padding: 0;
         }
         
         /* Header Styles */
-        header {
+        .user-panel-header {
             background-color: var(--primary-color);
             color: white;
-            padding: 20px 0;
-            border-bottom: 2px solid var(--accent-color);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .header-container {
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
         .logo-container {
@@ -64,47 +63,13 @@
         }
         
         .logo {
-            height: 50px;
-            margin-right: 15px;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
+            height: 40px;
         }
         
         .company-name {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--white);
-        }
-        
-        /* Main Content */
-        main {
-            margin-top: 80px;
-            padding: 2rem 5%;
-            background-color: var(--background-light);
-            min-height: calc(100vh - 80px);
-        }
-        
-        /* User Panel Styles */
-        .user-panel {
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
-            overflow: hidden;
-        }
-        
-        .panel-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .panel-header h2 {
-            font-size: 1.8rem;
         }
         
         .user-info {
@@ -114,92 +79,215 @@
         }
         
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             object-fit: cover;
         }
         
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .user-referral {
+            font-size: 12px;
+            color: var(--footer-text);
+        }
+        
+        .logout-btn {
+            background: none;
+            border: 1px solid var(--white);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 20px;
+            background-color: var(--background-light);
+            min-height: calc(100vh - 70px);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Panel Menu Styles */
         .panel-menu {
             display: flex;
-            background-color: var(--background-light);
-            border-bottom: 1px solid var(--accent-color);
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         
-        .panel-menu ul {
-            display: flex;
-            list-style: none;
-            width: 100%;
-        }
-        
-        .panel-menu li {
-            flex: 1;
-        }
-        
-        .panel-menu a {
-            display: block;
-            padding: 1rem;
-            text-align: center;
+        .panel-menu-item {
+            background-color: var(--white);
             color: var(--text-color);
+            padding: 12px 20px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .panel-menu a:hover, .panel-menu a.active {
+        .panel-menu-item:hover, .panel-menu-item.active {
             background-color: var(--accent-color);
             color: var(--white);
         }
         
-        .panel-content {
-            padding: 2rem;
+        .panel-menu-item i {
+            font-size: 16px;
         }
         
-        .dashboard-overview {
+        /* Dashboard Cards Styles */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
         }
         
         .dashboard-card {
             background-color: var(--white);
-            padding: 1.5rem;
+            padding: 20px;
             border-radius: 10px;
-            border-top: 4px solid var(--accent-color);
-            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
         }
         
         .dashboard-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
         
         .dashboard-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--light-text);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
         }
         
         .dashboard-card p {
             font-size: 1.8rem;
             font-weight: bold;
-            color: var(--primary-color);
+            margin-bottom: 10px;
         }
         
-        .market-overview {
+        .dashboard-card small {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+        
+        /* Card Colors */
+        .my-team-card::before { background-color: var(--accent-color); }
+        .my-team-card p { color: var(--accent-color); }
+        
+        .my-direct-card::before { background-color: var(--success-color); }
+        .my-direct-card p { color: var(--success-color); }
+        
+        .level-detail-card::before { background-color: var(--warning-color); }
+        .level-detail-card p { color: var(--warning-color); }
+        
+        .direct-leg-business-card::before { background-color: var(--info-color); }
+        .direct-leg-business-card p { color: var(--info-color); }
+        
+        .salary-level-bonus-card::before { background-color: var(--purple-color); }
+        .salary-level-bonus-card p { color: var(--purple-color); }
+        
+        .stake-bonus-card::before { background-color: var(--orange-color); }
+        .stake-bonus-card p { color: var(--orange-color); }
+        
+        .team-bonus-card::before { background-color: var(--teal-color); }
+        .team-bonus-card p { color: var(--teal-color); }
+        
+        .weekly-bonus-card::before { background-color: var(--pink-color); }
+        .weekly-bonus-card p { color: var(--pink-color); }
+        
+        .reward-bonus-card::before { background-color: var(--danger-color); }
+        .reward-bonus-card p { color: var(--danger-color); }
+        
+        .total-withdrawal-card::before { background-color: var(--light-text); }
+        .total-withdrawal-card p { color: var(--light-text); }
+        
+        .net-bonus-card::before { background-color: #795548; }
+        .net-bonus-card p { color: #795548; }
+        
+        .total-bonus-card::before { background-color: #607d8b; }
+        .total-bonus-card p { color: #607d8b; }
+        
+        .total-deposit-card::before { background-color: #5d4037; }
+        .total-deposit-card p { color: #5d4037; }
+        
+        .activation-card::before { background-color: #00897b; }
+        .activation-card p { color: #00897b; }
+        
+        .activation-history-card::before { background-color: #455a64; }
+        .activation-history-card p { color: #455a64; }
+        
+        .withdrawal-history-card::before { background-color: #37474f; }
+        .withdrawal-history-card p { color: #37474f; }
+        
+        .add-fund-card::before { background-color: #263238; }
+        .add-fund-card p { color: #263238; }
+        
+        .add-fund-history-card::before { background-color: #1b5e20; }
+        .add-fund-history-card p { color: #1b5e20; }
+        
+        /* Panel Content Styles */
+        .panel-content {
+            display: none;
+        }
+        
+        .panel-content.active {
+            display: block;
+        }
+        
+        /* Table Styles */
+        .table-container {
             background-color: var(--white);
-            padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
-            margin-bottom: 2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 25px;
         }
         
-        .market-overview h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
+        .table-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
         
         table {
@@ -207,94 +295,49 @@
             border-collapse: collapse;
         }
         
-        table th {
-            background-color: var(--background-light);
-            padding: 12px;
+        table th, table td {
+            padding: 12px 15px;
             text-align: left;
-            font-weight: 600;
-            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
         }
         
-        table td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+        table th {
+            background-color: var(--background-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        table tr:last-child td {
+            border-bottom: none;
         }
         
         table tr:hover {
             background-color: var(--background-light);
         }
         
-        .positive {
-            color: var(--success-color);
-        }
-        
-        .negative {
-            color: var(--danger-color);
-        }
-        
-        .team-section {
-            margin-bottom: 2rem;
-        }
-        
-        .team-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-        
-        .team-section h4 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-        
-        .team-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        
-        .team-member {
+        /* Form Styles */
+        .form-container {
             background-color: var(--white);
-            padding: 1rem;
             border-radius: 10px;
-            border-top: 4px solid var(--accent-color);
-            box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 25px;
         }
         
-        .team-member:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.2);
-        }
-        
-        .team-member img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 0.5rem;
-        }
-        
-        .team-member h4 {
-            font-size: 1rem;
-            margin-bottom: 0.2rem;
+        .form-title {
+            font-size: 1.3rem;
             color: var(--primary-color);
-        }
-        
-        .team-member p {
-            font-size: 0.9rem;
-            color: var(--light-text);
+            margin-bottom: 20px;
+            font-weight: bold;
         }
         
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
             font-weight: 500;
             color: var(--text-color);
         }
@@ -315,22 +358,99 @@
         
         .btn-primary {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background-color: var(--primary-color);
             color: var(--white);
             border: none;
             border-radius: 5px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: background-color 0.3s;
         }
         
         .btn-primary:hover {
             background-color: var(--accent-color);
-            transform: translateY(-3px);
         }
         
+        /* Referral Link Styles */
+        .referral-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .referral-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .referral-link-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .referral-link {
+            flex: 1;
+            padding: 12px;
+            background-color: var(--background-light);
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--text-color);
+            border: 1px solid #ddd;
+        }
+        
+        .copy-btn {
+            padding: 10px 15px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background-color: var(--background-light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        /* Status Badge */
         .status-badge {
             padding: 4px 8px;
             border-radius: 4px;
@@ -356,7 +476,7 @@
         /* Notification */
         .notification {
             position: fixed;
-            top: 100px;
+            top: 80px;
             right: 20px;
             background-color: var(--primary-color);
             color: white;
@@ -367,635 +487,367 @@
             z-index: 3000;
         }
         
+        .notification.success {
+            background-color: var(--success-color);
+        }
+        
+        .notification.error {
+            background-color: var(--danger-color);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
-            .panel-menu ul {
-                flex-wrap: wrap;
+            .user-panel-header {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
             }
             
-            .panel-menu li {
-                flex: 1 0 50%;
+            .user-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
             }
             
-            .dashboard-overview {
+            .dashboard-grid {
                 grid-template-columns: 1fr;
             }
             
-            .team-list {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            .panel-menu {
+                justify-content: center;
+            }
+            
+            .referral-link-container {
+                flex-direction: column;
+            }
+            
+            .referral-stats {
+                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo-container" id="logoContainer">
-                <img src="logo.png" alt="BitHorizon Logo" class="logo">
-                <span class="company-name">BitHorizon.io</span>
+    <!-- User Panel Header -->
+    <header class="user-panel-header">
+        <div class="logo-container" id="logoContainer">
+            <img src="logo.png" alt="BitHorizon Logo" class="logo">
+            <span class="company-name">BitHorizon.io</span>
+        </div>
+        
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="User Avatar" class="user-avatar">
+            <div class="user-details">
+                <span class="user-name" id="userName">Loading...</span>
+                <span class="user-referral" id="userReferral">Referral: Loading...</span>
             </div>
         </div>
+        
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
     </header>
+
     <!-- Main Content -->
     <main>
-        <!-- User Panel -->
-        <section id="userPanel" class="user-panel">
-            <div class="panel-header">
-                <h2>User Panel</h2>
-                <div class="user-info">
-                    <img src="https://via.placeholder.com/40" alt="User Avatar" class="user-avatar">
-                    <div>
-                        <div id="userName">Loading...</div>
-                        <div id="userReferral">Referral: Loading...</div>
-                    </div>
-                </div>
-            </div>
+        <div class="container">
+            <!-- Panel Menu -->
             <div class="panel-menu">
-                <ul>
-                    <li><a href="#" class="panel-menu-item active" data-panel="dashboard">Dashboard</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="profile">User Profile</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="team">My Team</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="income">Income</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="withdrawal">Withdrawal</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="deposit">Deposit</a></li>
-                    <li><a href="#" class="panel-menu-item" data-panel="support">Support</a></li>
-                    <li><a href="#" id="logoutBtn">Logout</a></li>
-                </ul>
+                <a href="#" class="panel-menu-item active" data-panel="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="team">
+                    <i class="fas fa-users"></i> My Team
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="direct">
+                    <i class="fas fa-user-friends"></i> My Direct
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="level">
+                    <i class="fas fa-layer-group"></i> Level Detail
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="business">
+                    <i class="fas fa-briefcase"></i> Direct Leg Business
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="salary">
+                    <i class="fas fa-money-bill-wave"></i> Salary Level Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="stake">
+                    <i class="fas fa-coins"></i> Stake Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="teambonus">
+                    <i class="fas fa-gift"></i> Team Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="weekly">
+                    <i class="fas fa-calendar-week"></i> Weekly Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="reward">
+                    <i class="fas fa-award"></i> Reward Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="withdrawal">
+                    <i class="fas fa-money-check-alt"></i> Total Withdrawal
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="netbonus">
+                    <i class="fas fa-chart-pie"></i> Net Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="totalbonus">
+                    <i class="fas fa-wallet"></i> Total Bonus
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="deposit">
+                    <i class="fas fa-piggy-bank"></i> Total Deposit
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="activation">
+                    <i class="fas fa-user-check"></i> Activation
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="activationhistory">
+                    <i class="fas fa-history"></i> Activation History
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="withdrawalhistory">
+                    <i class="fas fa-file-invoice-dollar"></i> Withdrawal History
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="addfund">
+                    <i class="fas fa-plus-circle"></i> Add Fund
+                </a>
+                <a href="#" class="panel-menu-item" data-panel="addfundhistory">
+                    <i class="fas fa-receipt"></i> Add Fund History
+                </a>
             </div>
-            <div class="panel-content">
-                <!-- Dashboard Panel -->
-                <div id="dashboardPanel" class="panel-section">
-                    <h3>Dashboard Overview</h3>
-                    <div class="dashboard-overview">
-                        <div class="dashboard-card">
-                            <h3>Account Balance</h3>
-                            <p>$5,432.10</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Total Profit</h3>
-                            <p>$1,245.67</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Active Trades</h3>
-                            <p>8</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Team Members</h3>
-                            <p>24</p>
-                        </div>
+            
+            <!-- Dashboard Panel -->
+            <div id="dashboardPanel" class="panel-content active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card my-team-card">
+                        <h3>My Team</h3>
+                        <p>24</p>
+                        <small>Total Members</small>
                     </div>
-                    
-                    <div class="market-overview">
-                        <h3>Your Recent Trades</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Pair</th>
-                                    <th>Type</th>
-                                    <th>Open</th>
-                                    <th>Close</th>
-                                    <th>Profit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>EUR/USD</td>
-                                    <td>Buy</td>
-                                    <td>1.0850</td>
-                                    <td>1.0875</td>
-                                    <td class="positive">+$25.00</td>
-                                </tr>
-                                <tr>
-                                    <td>GBP/USD</td>
-                                    <td>Sell</td>
-                                    <td>1.2650</td>
-                                    <td>1.2634</td>
-                                    <td class="positive">+$16.00</td>
-                                </tr>
-                                <tr>
-                                    <td>USD/JPY</td>
-                                    <td>Buy</td>
-                                    <td>149.50</td>
-                                    <td>149.72</td>
-                                    <td class="positive">+$22.00</td>
-                                </tr>
-                                <tr>
-                                    <td>USD/CHF</td>
-                                    <td>Sell</td>
-                                    <td>0.8990</td>
-                                    <td>0.8976</td>
-                                    <td class="positive">+$14.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="dashboard-card my-direct-card">
+                        <h3>My Direct</h3>
+                        <p>5</p>
+                        <small>Direct Referrals</small>
+                    </div>
+                    <div class="dashboard-card level-detail-card">
+                        <h3>Level Detail</h3>
+                        <p>8</p>
+                        <small>Current Level</small>
+                    </div>
+                    <div class="dashboard-card direct-leg-business-card">
+                        <h3>Direct Leg Business</h3>
+                        <p>$1,250.00</p>
+                        <small>This Month</small>
+                    </div>
+                    <div class="dashboard-card salary-level-bonus-card">
+                        <h3>Salary Level Bonus</h3>
+                        <p>$150.00</p>
+                        <small>This Month</small>
+                    </div>
+                    <div class="dashboard-card stake-bonus-card">
+                        <h3>Stake Bonus</h3>
+                        <p>$85.00</p>
+                        <small>This Month</small>
+                    </div>
+                    <div class="dashboard-card team-bonus-card">
+                        <h3>Team Bonus</h3>
+                        <p>$320.50</p>
+                        <small>This Month</small>
+                    </div>
+                    <div class="dashboard-card weekly-bonus-card">
+                        <h3>Weekly Bonus</h3>
+                        <p>$50.00</p>
+                        <small>This Week</small>
+                    </div>
+                    <div class="dashboard-card reward-bonus-card">
+                        <h3>Reward Bonus</h3>
+                        <p>$120.00</p>
+                        <small>This Month</small>
+                    </div>
+                    <div class="dashboard-card total-withdrawal-card">
+                        <h3>Total Withdrawal</h3>
+                        <p>$800.00</p>
+                        <small>Total Amount</small>
+                    </div>
+                    <div class="dashboard-card net-bonus-card">
+                        <h3>Net Bonus</h3>
+                        <p>$725.50</p>
+                        <small>This Month</small>
+                    </div>
+                    <div class="dashboard-card total-bonus-card">
+                        <h3>Total Bonus</h3>
+                        <p>$1,751.47</p>
+                        <small>All Time</small>
+                    </div>
+                    <div class="dashboard-card total-deposit-card">
+                        <h3>Total Deposit</h3>
+                        <p>$5,432.10</p>
+                        <small>Account Balance</small>
                     </div>
                 </div>
                 
-                <!-- Profile Panel -->
-                <div id="profilePanel" class="panel-section" style="display: none;">
-                    <h3>User Profile</h3>
-                    <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="fullName">Full Name</label>
-                                <input type="text" id="fullName" class="form-control" value="John Doe">
-                            </div>
-                            <div class="form-group">
-                                <label for="userEmail">Email</label>
-                                <input type="email" id="userEmail" class="form-control" value="john.doe@example.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="userPhone">Phone</label>
-                                <input type="tel" id="userPhone" class="form-control" value="+1 (555) 123-4567">
-                            </div>
-                            <div class="form-group">
-                                <label for="userCountry">Country</label>
-                                <select id="userCountry" class="form-control">
-                                    <option value="us" selected>United States</option>
-                                    <option value="uk">United Kingdom</option>
-                                    <option value="ca">Canada</option>
-                                    <option value="au">Australia</option>
-                                </select>
-                            </div>
+                <div class="referral-container">
+                    <h3 class="referral-title">Your Referral Link</h3>
+                    <div class="referral-link-container">
+                        <input type="text" class="referral-link" id="referralLink" value="https://bithorizon.io/signup?ref=BH3M8N1P" readonly>
+                        <button class="copy-btn" id="copyReferralBtn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="referral-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalClicks">0</div>
+                            <div class="stat-label">Total Clicks</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
-                            <img src="https://via.placeholder.com/150" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem;">
-                            <div>
-                                <button class="btn-primary" style="width: auto; padding: 8px 20px;">Change Photo</button>
-                            </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalSignups">0</div>
+                            <div class="stat-label">Total Signups</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="conversionRate">0%</div>
+                            <div class="stat-label">Conversion Rate</div>
                         </div>
                     </div>
-                    <button class="btn-primary">Update Profile</button>
                 </div>
                 
-                <!-- Team Panel -->
-                <div id="teamPanel" class="panel-section" style="display: none;">
-                    <h3>My Team</h3>
-                    <div class="team-section">
-                        <h4>Direct Referrals (5)</h4>
-                        <div class="team-list">
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Alice Johnson</h4>
-                                <p>Referral: BH3M8N1P</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Robert Smith</h4>
-                                <p>Referral: BH5T9K2R</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Emma Wilson</h4>
-                                <p>Referral: BH7L4M8N</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Michael Brown</h4>
-                                <p>Referral: BH9P5Q6R</p>
-                            </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
-                                <h4>Sarah Davis</h4>
-                                <p>Referral: BH2S7T8U</p>
-                            </div>
+                <div class="table-container">
+                    <div class="table-header">Your Recent Trades</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>Type</th>
+                                <th>Open</th>
+                                <th>Close</th>
+                                <th>Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EUR/USD</td>
+                                <td>Buy</td>
+                                <td>1.0850</td>
+                                <td>1.0875</td>
+                                <td class="positive">+$25.00</td>
+                            </tr>
+                            <tr>
+                                <td>GBP/USD</td>
+                                <td>Sell</td>
+                                <td>1.2650</td>
+                                <td>1.2634</td>
+                                <td class="positive">+$16.00</td>
+                            </tr>
+                            <tr>
+                                <td>USD/JPY</td>
+                                <td>Buy</td>
+                                <td>149.50</td>
+                                <td>149.72</td>
+                                <td class="positive">+$22.00</td>
+                            </tr>
+                            <tr>
+                                <td>USD/CHF</td>
+                                <td>Sell</td>
+                                <td>0.8990</td>
+                                <td>0.8976</td>
+                                <td class="positive">+$14.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Team Panel -->
+            <div id="teamPanel" class="panel-content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card my-team-card">
+                        <h3>My Team</h3>
+                        <p>24</p>
+                        <small>Total Members</small>
+                    </div>
+                    <div class="dashboard-card my-direct-card">
+                        <h3>My Direct</h3>
+                        <p>5</p>
+                        <small>Direct Referrals</small>
+                    </div>
+                </div>
+                
+                <div class="team-section">
+                    <h4>Direct Referrals (5)</h4>
+                    <div class="team-list">
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
+                            <h4>Alice Johnson</h4>
+                            <p>Referral: BH3M8N1P</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
+                            <h4>Robert Smith</h4>
+                            <p>Referral: BH5T9K2R</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
+                            <h4>Emma Wilson</h4>
+                            <p>Referral: BH7L4M8N</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
+                            <h4>Michael Brown</h4>
+                            <p>Referral: BH9P5Q6R</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
+                            <h4>Sarah Davis</h4>
+                            <p>Referral: BH2S7T8U</p>
                         </div>
                     </div>
-                    
-                    <div class="team-section">
-                        <h4>Team Network (19)</h4>
-                        <div class="team-list">
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                </div>
+                
+                <div class="team-section">
+                    <h4>Team Network (19)</h4>
+                    <div class="team-list">
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
                                 <h4>James Miller</h4>
                                 <p>Referral: BH4V9W1X</p>
                             </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
                                 <h4>Linda Garcia</h4>
                                 <p>Referral: BH6Y2Z3A</p>
                             </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
                                 <h4>David Martinez</h4>
                                 <p>Referral: BH8B4C5D</p>
                             </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
                                 <h4>Jennifer Lee</h4>
                                 <p>Referral: BH1E6F7G</p>
                             </div>
-                            <div class="team-member">
-                                <img src="https://via.placeholder.com/60" alt="Team Member">
+                        <div class="team-member">
+                            <img src="https://via.placeholder.com/60" alt="Team Member">
                                 <h4>William Taylor</h4>
                                 <p>Referral: BH3H8I9J</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Income Panel -->
-                <div id="incomePanel" class="panel-section" style="display: none;">
-                    <h3>Income Overview</h3>
-                    <div class="dashboard-overview">
-                        <div class="dashboard-card">
-                            <h3>Trading Profit</h3>
-                            <p>$1,245.67</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Referral Bonus</h3>
-                            <p>$320.50</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Team Commission</h3>
-                            <p>$185.30</p>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Total Income</h3>
-                            <p>$1,751.47</p>
-                        </div>
-                    </div>
-                    
-                    <div class="market-overview">
-                        <h3>Income History</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Source</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023-06-15</td>
-                                    <td>Trading</td>
-                                    <td>EUR/USD Profit</td>
-                                    <td class="positive">+$25.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-14</td>
-                                    <td>Referral</td>
-                                    <td>Bonus from Alice Johnson</td>
-                                    <td class="positive">+$10.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-13</td>
-                                    <td>Team</td>
-                                    <td>Commission from Robert Smith</td>
-                                    <td class="positive">+$5.50</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-12</td>
-                                    <td>Trading</td>
-                                    <td>GBP/USD Profit</td>
-                                    <td class="positive">+$16.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-11</td>
-                                    <td>Trading</td>
-                                    <td>USD/JPY Profit</td>
-                                    <td class="positive">+$22.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Withdrawal Panel -->
-                <div id="withdrawalPanel" class="panel-section" style="display: none;">
-                    <h3>Withdraw Funds</h3>
-                    <div class="form-group">
-                        <label for="withdrawalAmount">Amount ($)</label>
-                        <input type="number" id="withdrawalAmount" class="form-control" placeholder="Enter amount to withdraw">
-                    </div>
-                    <div class="form-group">
-                        <label for="withdrawalMethod">Withdrawal Method</label>
-                        <select id="withdrawalMethod" class="form-control">
-                            <option value="bank">Bank Transfer</option>
-                            <option value="crypto">Cryptocurrency</option>
-                            <option value="paypal">PayPal</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="withdrawalDetails">Withdrawal Details</label>
-                        <textarea id="withdrawalDetails" class="form-control" rows="4" placeholder="Enter your bank account details, crypto wallet address, or PayPal email"></textarea>
-                    </div>
-                    <button class="btn-primary">Submit Withdrawal Request</button>
-                    
-                    <div class="market-overview" style="margin-top: 2rem;">
-                        <h3>Withdrawal History</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Method</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023-06-10</td>
-                                    <td>$500.00</td>
-                                    <td>Bank Transfer</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-05</td>
-                                    <td>$300.00</td>
-                                    <td>Cryptocurrency</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-01</td>
-                                    <td>$200.00</td>
-                                    <td>PayPal</td>
-                                    <td><span class="status-badge status-processing">Processing</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Deposit Panel -->
-                <div id="depositPanel" class="panel-section" style="display: none;">
-                    <h3>Deposit Funds</h3>
-                    <div class="form-group">
-                        <label for="depositAmount">Amount ($)</label>
-                        <input type="number" id="depositAmount" class="form-control" placeholder="Enter amount to deposit">
-                    </div>
-                    <div class="form-group">
-                        <label for="depositMethod">Deposit Method</label>
-                        <select id="depositMethod" class="form-control">
-                            <option value="bank">Bank Transfer</option>
-                            <option value="crypto">Cryptocurrency</option>
-                            <option value="card">Credit/Debit Card</option>
-                            <option value="paypal">PayPal</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="depositBonus">Select Bonus (Optional)</label>
-                        <select id="depositBonus" class="form-control">
-                            <option value="none">No Bonus</option>
-                            <option value="5">5% Bonus</option>
-                            <option value="10">10% Bonus</option>
-                            <option value="15">15% Bonus</option>
-                        </select>
-                    </div>
-                    <button class="btn-primary">Proceed to Deposit</button>
-                    
-                    <div class="market-overview" style="margin-top: 2rem;">
-                        <h3>Deposit History</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Method</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023-06-12</td>
-                                    <td>$1,000.00</td>
-                                    <td>Bank Transfer</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-08</td>
-                                    <td>$500.00</td>
-                                    <td>Credit Card</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-01</td>
-                                    <td>$250.00</td>
-                                    <td>Cryptocurrency</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Support Panel -->
-                <div id="supportPanel" class="panel-section" style="display: none;">
-                    <h3>Support Center</h3>
-                    <div class="form-group">
-                        <label for="supportSubject">Subject</label>
-                        <input type="text" id="supportSubject" class="form-control" placeholder="Enter subject">
-                    </div>
-                    <div class="form-group">
-                        <label for="supportMessage">Message</label>
-                        <textarea id="supportMessage" class="form-control" rows="6" placeholder="Describe your issue or question"></textarea>
-                    </div>
-                    <button class="btn-primary">Submit Ticket</button>
-                    
-                    <div class="market-overview" style="margin-top: 2rem;">
-                        <h3>Your Support Tickets</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Subject</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#1024</td>
-                                    <td>Withdrawal Issue</td>
-                                    <td>2023-06-10</td>
-                                    <td><span class="status-badge status-completed">Resolved</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1023</td>
-                                    <td>Account Verification</td>
-                                    <td>2023-06-05</td>
-                                    <td><span class="status-badge status-completed">Resolved</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1022</td>
-                                    <td>Trading Platform Question</td>
-                                    <td>2023-06-01</td>
-                                    <td><span class="status-badge status-processing">In Progress</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
-    <script>
-        // Initialize Firebase with your configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD9SYoIYxj0d3shvER4hqGiDugfIwuCluI",
-            authDomain: "bithorizon-d3fac.firebaseapp.com",
-            projectId: "bithorizon-d3fac",
-            storageBucket: "bithorizon-d3fac.firebasestorage.app",
-            messagingSenderId: "400494505534",
-            appId: "1:400494505534:web:a0e16d82957e670b11ab6f",
-            measurementId: "G-BRV5F7G0XH"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        
-        // DOM Elements
-        const logoContainer = document.getElementById('logoContainer');
-        const panelMenuItems = document.querySelectorAll('.panel-menu-item');
-        const panelSections = document.querySelectorAll('.panel-section');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const notification = document.getElementById('notification');
-        const userName = document.getElementById('userName');
-        const userReferral = document.getElementById('userReferral');
-        
-        // Show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.style.backgroundColor = type === 'success' ? 'var(--primary-color)' : 'var(--danger-color)';
-            notification.style.display = 'block';
             
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-        
-        // Logo click - redirect to home
-        logoContainer.addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-        
-        // Panel Navigation
-        panelMenuItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
+            <!-- Direct Panel -->
+            <div id="directPanel" class="panel-content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card my-direct-card">
+                        <h3>My Direct</h3>
+                        <p>5</p>
+                        <small>Direct Referrals</small>
+                    </div>
+                    <div class="dashboard-card direct-leg-business-card">
+                        <h3>Direct Leg Business</h3>
+                        <p>$1,250.00</p>
+                        <small>This Month</small>
+                    </div>
+                </div>
                 
-                // Remove active class from all menu items
-                panelMenuItems.forEach(i => i.classList.remove('active'));
-                
-                // Add active class to clicked item
-                item.classList.add('active');
-                
-                // Hide all panel sections
-                panelSections.forEach(section => {
-                    section.style.display = 'none';
-                });
-                
-                // Show selected panel section
-                const panelId = item.getAttribute('data-panel') + 'Panel';
-                const selectedPanel = document.getElementById(panelId);
-                if (selectedPanel) {
-                    selectedPanel.style.display = 'block';
-                }
-            });
-        });
-        
-        // Logout
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            auth.signOut()
-                .then(() => {
-                    // Clear localStorage
-                    localStorage.removeItem('bithorizon_user');
-                    
-                    // Redirect to home page
-                    window.location.href = 'index.html';
-                    
-                    showNotification('You have been logged out successfully');
-                })
-                .catch((error) => {
-                    showNotification(error.message, 'error');
-                });
-        });
-        
-        // Check if user is logged in
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                if (user.emailVerified) {
-                    // Get user data from localStorage
-                    const userDataJSON = localStorage.getItem('bithorizon_user');
-                    
-                    if (userDataJSON) {
-                        const userData = JSON.parse(userDataJSON);
-                        
-                        // Set user name and referral code
-                        userName.textContent = userData.fullName;
-                        userReferral.textContent = 'Referral: ' + userData.referralCode;
-                    } else {
-                        // If no user data in localStorage, create basic data
-                        const referralCode = 'BH' + Math.random().toString(36).substring(2, 8).toUpperCase();
-                        const userData = {
-                            fullName: user.displayName || 'User',
-                            email: user.email,
-                            referralCode,
-                            uid: user.uid
-                        };
-                        
-                        localStorage.setItem('bithorizon_user', JSON.stringify(userData));
-                        
-                        userName.textContent = userData.fullName;
-                        userReferral.textContent = 'Referral: ' + userData.referralCode;
-                    }
-                } else {
-                    // Email not verified
-                    auth.signOut();
-                    localStorage.removeItem('bithorizon_user');
-                    window.location.href = 'index.html';
-                }
-            } else {
-                // No user is signed in
-                window.location.href = 'index.html';
-            }
-        });
-        
-        // Handle form submissions (demo functionality)
-        document.getElementById('profilePanel').querySelector('.btn-primary').addEventListener('click', () => {
-            showNotification('Profile updated successfully!');
-        });
-        
-        document.getElementById('withdrawalPanel').querySelector('.btn-primary').addEventListener('click', () => {
-            const amount = document.getElementById('withdrawalAmount').value;
-            if (amount) {
-                showNotification('Withdrawal request submitted successfully!');
-                document.getElementById('withdrawalAmount').value = '';
-                document.getElementById('withdrawalDetails').value = '';
-            } else {
-                showNotification('Please enter withdrawal amount', 'error');
-            }
-        });
-        
-        document.getElementById('depositPanel').querySelector('.btn-primary').addEventListener('click', () => {
-            const amount = document.getElementById('depositAmount').value;
-            if (amount) {
-                showNotification('Deposit request submitted successfully!');
-                document.getElementById('depositAmount').value = '';
-            } else {
-                showNotification('Please enter deposit amount', 'error');
-            }
-        });
-        
-        document.getElementById('supportPanel').querySelector('.btn-primary').addEventListener('click', () => {
-            const subject = document.getElementById('supportSubject').value;
-            const message = document.getElementById('supportMessage').value;
-            if (subject && message) {
-                showNotification('Support ticket submitted successfully!');
-                document.getElementById('supportSubject').value = '';
-                document.getElementById('supportMessage').value = '';
-            } else {
-                showNotification('Please fill in all fields', 'error');
-            }
-        });
-    </script>
-</body>
-</html>
+                <div class="table-container">
+                    <div class="table-header">Direct Referrals</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
